@@ -6,66 +6,6 @@
   <title>Voltwise — Dashboard</title>
 
   <style>
-    /* ===== Fleet Overview (card acima das tabelas) ===== */
-    .overviewGrid{
-      display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    @media (max-width: 980px){
-      .overviewGrid{ grid-template-columns: 1fr; }
-    }
-
-    .overviewCard{
-      background: #ffffff;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
-      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
-      position: relative;
-      overflow: hidden;
-    }
-    .overviewCard::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background: radial-gradient(820px 260px at 0% 0%, rgba(37,99,235,0.12), transparent 60%);
-      pointer-events:none;
-    }
-
-    .overviewTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
-      position: relative;
-      z-index: 1;
-      margin-bottom: 10px;
-    }
-    .overviewTitle{ font-weight: 950; letter-spacing: -0.2px; margin: 0; }
-    .overviewSubtitle{ margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 700; }
-
-    .overviewStats{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      position: relative;
-      z-index: 1;
-    }
-    @media (max-width: 560px){
-      .overviewStats{ grid-template-columns: 1fr 1fr; }
-    }
-
-    .statBox{
-      border: 1px solid rgba(15,23,42,0.08);
-      background: linear-gradient(180deg, rgba(248,250,252,0.9), rgba(255,255,255,0.6));
-      border-radius: 14px;
-      padding: 12px;
-    }
-    .statLabel{ font-size: 12px; color: var(--muted); font-weight: 900; }
-    .statValue{ margin-top: 6px; font-size: 20px; font-weight: 950; letter-spacing: -0.3px; color: #0f172a; }
-
     :root{
       --bg: #f5f7fb;
       --card: #ffffff;
@@ -77,9 +17,6 @@
       --bad: #ef4444;
       --warn: #f59e0b;
 
-      --btn: #2563eb;
-
-      --shadow: 0 10px 25px rgba(15,23,42,0.08);
       --shadow2: 0 6px 16px rgba(15,23,42,0.08);
       --radius: 16px;
     }
@@ -93,7 +30,7 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
 
-    /* ===== TOPBAR (HEADER) ===== */
+    /* ===== TOPBAR ===== */
     header.topbar{
       position: sticky;
       top: 0;
@@ -157,6 +94,7 @@
     .subtitle{
       font-size: 12.5px;
       color: var(--muted);
+      font-weight: 700;
     }
 
     .topMid{
@@ -168,7 +106,6 @@
       justify-content: center;
     }
 
-    /* Search */
     .searchWrap{
       flex: 1;
       max-width: 520px;
@@ -183,8 +120,8 @@
       background: rgba(255,255,255,0.9);
       outline: none;
       box-shadow: 0 2px 10px rgba(15,23,42,0.04);
+      font-weight: 800;
     }
-
     .searchWrap input::placeholder{ color:#94a3b8; }
 
     .searchIcon{
@@ -198,7 +135,6 @@
       color: #334155;
     }
 
-    /* Segmented Tabs */
     .segTabs{
       display:flex;
       align-items:center;
@@ -217,7 +153,7 @@
       border: none;
       background: transparent;
       color: #0f172a;
-      font-weight: 800;
+      font-weight: 900;
       font-size: 13px;
       padding: 10px 16px;
       border-radius: 999px;
@@ -253,7 +189,7 @@
       color: #334155;
       background: rgba(255,255,255,0.9);
       box-shadow: 0 2px 10px rgba(15,23,42,0.04);
-      font-weight: 700;
+      font-weight: 900;
     }
 
     .status{
@@ -262,7 +198,7 @@
       gap: 8px;
       font-size: 12px;
       color: #475569;
-      font-weight: 700;
+      font-weight: 900;
     }
 
     .status-dot{
@@ -280,7 +216,7 @@
       border: 1px solid var(--line);
       background: white;
       color: #0f172a;
-      font-weight: 700;
+      font-weight: 900;
       cursor:pointer;
       box-shadow: 0 2px 10px rgba(15,23,42,0.03);
     }
@@ -329,28 +265,18 @@
       .searchWrap{ max-width: 100%; }
     }
 
-    /* ===== MAIN LAYOUT ===== */
+    /* ===== MAIN ===== */
     main{
       max-width: 1200px;
       margin: 0 auto;
       padding: 18px;
     }
 
-    .viewGrid{
-      display:grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 14px;
-    }
-
-    @media (max-width: 980px){
-      .viewGrid{ grid-template-columns: 1fr; }
-    }
-
     .card{
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 14px;
+      padding: 16px;
       box-shadow: var(--shadow2);
     }
 
@@ -362,7 +288,7 @@
       letter-spacing: -0.1px;
     }
 
-    .muted{ color: var(--muted); font-size: 12px; font-weight: 600; }
+    .muted{ color: var(--muted); font-size: 12px; font-weight: 800; }
 
     .grid{
       display:grid;
@@ -375,7 +301,7 @@
       font-size: 12px;
       color: var(--muted);
       margin: 8px 0 6px;
-      font-weight: 700;
+      font-weight: 900;
     }
 
     input, select{
@@ -386,16 +312,10 @@
       background: #ffffff;
       color: var(--text);
       outline: none;
-      font-weight: 600;
+      font-weight: 800;
     }
 
     input::placeholder{ color: #9aa3af; }
-
-    /* Dá mais espaço para datetime-local (fica mais “editável”) */
-    input[type="datetime-local"]{
-      padding: 9px 10px;
-      font-variant-numeric: tabular-nums;
-    }
 
     table{
       width:100%;
@@ -411,6 +331,7 @@
       border-bottom: 1px solid var(--line);
       font-size: 12px;
       vertical-align: top;
+      white-space: nowrap;
     }
 
     th{
@@ -421,7 +342,7 @@
     }
 
     tr:last-child td{ border-bottom: none; }
-    .small{ font-size: 11px; color: var(--muted); font-weight: 700; }
+    .small{ font-size: 11px; color: var(--muted); font-weight: 900; }
 
     .toolbar{
       display:flex;
@@ -430,148 +351,27 @@
       justify-content:space-between;
       margin-top: 10px;
     }
-
     .toolbar .left{ display:flex; gap:10px; align-items:center; }
     .toolbar .right{ display:flex; gap:10px; align-items:center; }
 
-    /* ===== KPIs (com severidade + look premium) ===== */
-    .kpi{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 860px){
-      .kpi{ grid-template-columns: 1fr; }
-    }
-
-    .kpiCard{
-      background: #ffffff;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px;
-      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
-      position: relative;
-      overflow: hidden;
-      min-height: 110px;
-    }
-
-    .kpiCard::before{
-      content:"";
-      position:absolute;
-      inset: 0;
-      background: radial-gradient(680px 220px at 0% 0%, rgba(37,99,235,0.10), transparent 60%);
-      pointer-events:none;
-    }
-
-    .kpiTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 10px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .kpiLab{
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 900;
-      margin-top: 2px;
-    }
-
-    .kpiVal{
-      font-size: 22px;
-      font-weight: 950;
-      letter-spacing: -0.3px;
-      margin-top: 6px;
-      color: #0f172a;
-    }
-
-    .kpiDelta{
-      display:inline-flex;
-      align-items:center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 950;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.9);
-      color: #334155;
-      white-space: nowrap;
-    }
-
-    .kpiDelta.good{ border-color: rgba(22,163,74,0.25); color: #166534; background: rgba(22,163,74,0.08); }
-    .kpiDelta.bad{  border-color: rgba(239,68,68,0.25); color: #991b1b; background: rgba(239,68,68,0.08); }
-    .kpiDelta.neu{  border-color: rgba(148,163,184,0.35); color: #334155; background: rgba(148,163,184,0.10); }
-
-    .spark{
-      margin-top: 10px;
-      position: relative;
-      z-index: 1;
-      height: 26px;
+    .tableWrap{
       width: 100%;
-      border-radius: 10px;
-      border: 1px solid rgba(15,23,42,0.06);
-      background: linear-gradient(180deg, rgba(248,250,252,0.9), rgba(255,255,255,0.6));
-      overflow: hidden;
-    }
-    .spark svg{ width: 100%; height: 100%; }
-    .spark polyline{ fill: none; stroke: rgba(29,78,216,0.85); stroke-width: 2; }
-    .spark .area{ fill: rgba(37,99,235,0.10); }
-
-    /* Switch (claro) */
-    .switch{
-      display:flex;
-      align-items:center;
-      gap: 10px;
+      overflow-x: auto;
+      border-radius: 14px;
     }
 
-    .switch input{
-      width: 46px;
-      height: 26px;
-      appearance:none;
-      background:#e5e7eb;
-      border:1px solid var(--line);
-      border-radius: 999px;
-      position: relative;
-      cursor:pointer;
+    .tableWrap table{ min-width: 1180px; }
+
+    .numSm{ width: 92px; min-width: 92px; }
+    .numMd{ width: 110px; min-width: 110px; }
+
+    .dtInput{
+      width: 260px !important;
+      min-width: 260px !important;
+      font-weight: 900;
     }
 
-    .switch input:checked{ background: rgba(22,163,74,0.35); border-color: rgba(22,163,74,0.35); }
-
-    .switch input::after{
-      content:"";
-      width: 22px;
-      height: 22px;
-      position:absolute;
-      top: 1px;
-      left: 1px;
-      border-radius: 999px;
-      background:#ffffff;
-      transition: left 0.15s ease;
-      box-shadow: 0 4px 10px rgba(15,23,42,0.10);
-    }
-
-    .switch input:checked::after{ left: 22px; }
-    .switch span{ font-size: 12px; color: #475569; font-weight: 800; }
-
-    /* pre em claro */
-    pre{
-      margin:0;
-      background:#f8fafc;
-      border: 1px solid var(--line);
-      padding: 12px;
-      border-radius: 12px;
-      overflow:auto;
-      max-height: 320px;
-      color: #0f172a;
-      font-weight: 600;
-    }
-
-    /* Toasts (claros) */
+    /* Toasts */
     #toasts{
       position: fixed;
       right: 14px;
@@ -593,19 +393,338 @@
     }
 
     .toast .t{ font-size: 12px; color: var(--muted); font-weight: 900; }
-    .toast .m{ margin-top: 6px; font-size: 13px; color: #0f172a; font-weight: 700; }
+    .toast .m{ margin-top: 6px; font-size: 13px; color: #0f172a; font-weight: 900; }
 
     .toast.good{ border-color: rgba(22,163,74,0.28); }
     .toast.warn{ border-color: rgba(245,158,11,0.28); }
     .toast.bad{  border-color: rgba(239,68,68,0.28); }
 
-    /* util */
     .hiddenRow { display: none !important; }
+
+    #tblRoutes th:nth-child(2),
+    #tblRoutes td:nth-child(2){
+      min-width: 80px;
+    }
+
+    /* ===== OPERAÇÃO (layout) ===== */
+    .opsGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+
+    .opsTopRow{
+      grid-column: 1 / -1;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .opsBottomLeft{ grid-column: 1; }
+    .opsBottomRight{ grid-column: 2; }
+
+    @media (max-width: 980px){
+      .opsGrid{ grid-template-columns: 1fr; }
+      .opsTopRow{ grid-template-columns: 1fr; }
+      .opsBottomLeft, .opsBottomRight{ grid-column: 1; }
+    }
+
+    /* ===== Pills / mini-cards ===== */
+    .statusChip{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(22,163,74,0.28);
+      background: rgba(22,163,74,0.06);
+      font-weight: 900;
+      font-size: 12px;
+      color: #166534;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.04);
+      white-space: nowrap;
+    }
+    .statusChip.warn{
+      border-color: rgba(245,158,11,0.40);
+      background: rgba(245,158,11,0.10);
+      color: #92400e;
+    }
+    .statusChip .dot{
+      width: 9px; height: 9px; border-radius: 999px;
+      background: var(--good);
+      box-shadow: 0 0 0 4px rgba(22,163,74,0.12);
+    }
+    .statusChip.warn .dot{
+      background: var(--warn);
+      box-shadow: 0 0 0 4px rgba(245,158,11,0.14);
+    }
+
+    .miniGrid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media (max-width: 980px){
+      .miniGrid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .miniCard{
+      border: 1px solid #e6eaf2;
+      background: #f8fafc;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 6px 16px rgba(15,23,42,0.05);
+    }
+    .miniCard.danger{
+      border-color: rgba(239,68,68,0.35);
+      background: rgba(239,68,68,0.08);
+    }
+    .miniLabel{
+      font-size: 12px;
+      color: #334155;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .miniValue{
+      font-size: 22px;
+      font-weight: 1000;
+      letter-spacing: -0.6px;
+    }
+    .miniSubWarn{
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #9f1239;
+      display:none;
+    }
+    .miniCard.danger .miniSubWarn{ display:block; }
+
+    .planGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    /* KPIs “Resultados” com arcos (cores intensas) */
+    .kpiRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 980px){
+      .kpiRow{ grid-template-columns: 1fr; }
+    }
+
+    .kpiCard{
+      position: relative;
+      border: 1px solid #e6eaf2;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+      box-shadow: 0 6px 16px rgba(15,23,42,0.05);
+      overflow:hidden;
+      min-height: 88px;
+    }
+
+    .kpiCard::before{
+      content:"";
+      position:absolute;
+      right:-34px;
+      top:-34px;
+      width: 140px;
+      height: 140px;
+      border-radius: 999px;
+      pointer-events:none;
+      opacity: .88;
+      filter: saturate(1.25) contrast(1.05);
+    }
+
+    .kpiCard.kpiBlue{
+      background: linear-gradient(180deg, rgba(37,99,235,0.06), rgba(255,255,255,1) 60%);
+    }
+    .kpiCard.kpiGold{
+      background: linear-gradient(180deg, rgba(245,158,11,0.06), rgba(255,255,255,1) 60%);
+    }
+    .kpiCard.kpiAmber{
+      background: linear-gradient(180deg, rgba(245,158,11,0.07), rgba(255,255,255,1) 60%);
+    }
+
+    .kpiCard.kpiBlue::before{
+      background: radial-gradient(circle at 30% 30%, rgba(37,99,235,0.45), rgba(37,99,235,0) 67%);
+    }
+    .kpiCard.kpiGold::before{
+      background: radial-gradient(circle at 30% 30%, rgba(245,158,11,0.42), rgba(245,158,11,0) 67%);
+    }
+    .kpiCard.kpiAmber::before{
+      background: radial-gradient(circle at 30% 30%, rgba(245,158,11,0.40), rgba(245,158,11,0) 67%);
+    }
+
+    .kpiTitle{
+      font-size: 12px;
+      color: #475569;
+      font-weight: 900;
+      margin-bottom: 6px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .kpiValue{
+      font-size: 22px;
+      font-weight: 1000;
+      letter-spacing: -0.6px;
+      margin-bottom: 10px;
+    }
+
+    .kpiPillSm{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height: 18px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(241,245,249,0.95);
+      color: #475569;
+      font-size: 11px;
+      font-weight: 900;
+      width: 64px;
+    }
+
+    .kpiIcon{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(241,245,249,0.95);
+    }
+    .kpiIcon svg{ width: 18px; height: 18px; opacity: .9; }
+
+    /* ====== NOVO: “Resposta completa” e “Explicações” em separadores ====== */
+    .accordion{
+      margin-top: 12px;
+      border: 1px solid #e6eaf2;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 6px 16px rgba(15,23,42,0.05);
+      overflow:hidden;
+    }
+
+    details.accordion > summary{
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+      font-weight: 1000;
+      font-size: 13px;
+      color: #0f172a;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e6eaf2;
+    }
+    details.accordion > summary::-webkit-details-marker{ display:none; }
+
+    .accBody{
+      padding: 12px 14px;
+    }
+
+    .accHint{
+      font-size: 12px;
+      font-weight: 900;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .kvGrid{
+      display:grid;
+      grid-template-columns: 220px 1fr;
+      gap: 8px 12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .kvGrid{ grid-template-columns: 1fr; }
+    }
+
+    .kvKey{
+      font-size: 12px;
+      color: #475569;
+      font-weight: 1000;
+    }
+    .kvVal{
+      font-size: 12px;
+      color: #0f172a;
+      font-weight: 900;
+      word-break: break-word;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      background: rgba(241,245,249,0.95);
+      font-size: 11px;
+      font-weight: 1000;
+      color: #334155;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      white-space: nowrap;
+    }
+
+    .subDetails{
+      border: 1px solid #e6eaf2;
+      border-radius: 12px;
+      background: #fff;
+      overflow:hidden;
+      margin-top: 10px;
+    }
+
+    .subDetails > summary{
+      list-style:none;
+      cursor:pointer;
+      padding: 10px 12px;
+      font-weight: 1000;
+      font-size: 12.5px;
+      background: rgba(248,250,252,0.9);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      border-bottom: 1px solid #e6eaf2;
+    }
+    .subDetails > summary::-webkit-details-marker{ display:none; }
+
+    .scrollBox{
+      max-height: 260px; /* ✅ não estica a página */
+      overflow:auto;
+      padding-right: 6px;
+    }
+
+    /* Usar melhor o espaço: meter “Resultados” compacto e “Resposta/Explicações” no lado esquerdo */
+    .opsBottomLeft .tableWrap table{ min-width: 980px; } /* menos largo para caber melhor */
+    .opsBottomRight .tableWrap table{ min-width: 880px; }
+
   </style>
 </head>
 
 <body>
-  <!-- ===== HEADER ===== -->
   <header class="topbar">
     <div class="topbarInner">
       <div class="brand">
@@ -650,11 +769,10 @@
     </div>
   </header>
 
-  <!-- ===== MAIN ===== -->
   <main>
     <!-- TAB: CONFIGURAÇÃO -->
     <div id="viewConfig" style="display:block;">
-      <div class="viewGrid">
+      <div style="display:grid; grid-template-columns: 1.65fr 0.35fr; gap:14px; align-items:start;">
         <section class="card">
           <h2>Configuração</h2>
 
@@ -664,84 +782,83 @@
               <input id="siteMaxKw" type="number" value="60" step="1" />
             </div>
             <div>
-              <label>Data/hora “agora” (opcional)</label>
-              <!-- ✅ AGORA É UM SELETOR FÁCIL -->
-              <input id="nowOverride" type="datetime-local" />
-              <div class="small" style="margin-top:6px;">
-                Dica: deixa vazio para usar a hora atual.
-              </div>
+              <label>(opcional)</label>
+              <input id="nowOverride" placeholder="YYYY-MM-DDTHH:MM:SS (Deixar vazio para automático)" />
             </div>
           </div>
 
           <div class="toolbar">
             <div class="left">
               <h2 style="margin:0;">Carregadores</h2>
-              <span class="small">Adicionar/Remover</span>
             </div>
             <div class="right">
               <button id="btnAddCharger" type="button">+ Adicionar carregador</button>
             </div>
           </div>
 
-          <table id="tblChargers">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Max kW</th>
-                <th>Ativo</th>
-                <th>Eficiência</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <div class="tableWrap">
+            <table id="tblChargers">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Max kW</th>
+                  <th>Ativo</th>
+                  <th>Eficiência</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
 
           <div class="toolbar">
             <div class="left">
               <h2 style="margin:0;">Veículos</h2>
-              <span class="small">Adicionar/Remover</span>
             </div>
             <div class="right">
               <button id="btnAddVehicle" type="button">+ Adicionar veículo</button>
             </div>
           </div>
 
-          <table id="tblVehicles">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Bateria (kWh)</th>
-                <th>SoC</th>
-                <th>SoH</th>
-                <th>Temp</th>
-                <th>Estado</th>
-                <th>Carregador</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <div class="tableWrap">
+            <table id="tblVehicles">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Bateria (kWh)</th>
+                  <th>SoC</th>
+                  <th>SoH</th>
+                  <th>Temp</th>
+                  <th>Estado</th>
+                  <th>Carregador (opcional)</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
 
           <div class="toolbar">
             <div class="left">
               <h2 style="margin:0;">Preço da energia</h2>
-              <span class="small">Tabela simples (por hora)</span>
             </div>
             <div class="right">
               <button id="btnAddPrice" type="button">+ Adicionar preço</button>
             </div>
           </div>
 
-          <table id="tblPrices">
-            <thead>
-              <tr>
-                <th>Data/Hora</th>
-                <th>€/kWh</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <div class="tableWrap">
+            <table id="tblPrices">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>€/kWh</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </section>
 
         <section class="card">
@@ -758,187 +875,210 @@
           </div>
 
           <label style="margin-top:12px;">Últimos pop-ups</label>
-          <pre id="popupLog">[]</pre>
+          <div class="accordion" style="padding:0;">
+            <div class="accBody scrollBox" style="max-height: 380px;">
+              <div id="popupLog" class="muted" style="white-space:pre-wrap; font-weight:900;">[]</div>
+            </div>
+          </div>
         </section>
       </div>
     </div>
 
     <!-- TAB: OPERAÇÃO -->
     <div id="viewOps" style="display:none;">
-      <!-- ===== FLEET OVERVIEW (NOVO) ===== -->
-      <div class="overviewGrid">
-        <section class="overviewCard">
-          <div class="overviewTop">
-            <div>
-              <div class="overviewTitle">Fleet Overview</div>
-              <div class="overviewSubtitle">Ativos / a carregar / em rota / críticos (resumo rápido).</div>
-            </div>
-            <div class="pill" id="ovHealthPill" title="Estado geral">Estado: —</div>
-          </div>
+      <div class="opsGrid">
 
-          <div class="overviewStats">
-            <div class="statBox">
-              <div class="statLabel">Ativos</div>
-              <div class="statValue" id="ovActive">—</div>
+        <div class="opsTopRow">
+          <section class="card">
+            <div class="toolbar" style="margin-top:0;">
+              <div class="left" style="gap:8px;">
+                <h2 style="margin:0;">Fleet Overview</h2>
+                <span class="small">Ativos / a carregar / em rota / críticos (resumo rápido).</span>
+              </div>
+              <div class="right">
+                <span id="fleetChip" class="statusChip"><span class="dot"></span><span id="fleetStateText">Estado: OK</span></span>
+              </div>
             </div>
-            <div class="statBox">
-              <div class="statLabel">A carregar</div>
-              <div class="statValue" id="ovCharging">—</div>
-            </div>
-            <div class="statBox">
-              <div class="statLabel">Em rota</div>
-              <div class="statValue" id="ovOnRoute">—</div>
-            </div>
-            <div class="statBox">
-              <div class="statLabel">Críticos</div>
-              <div class="statValue" id="ovCritical">—</div>
-            </div>
-          </div>
-        </section>
 
-        <section class="overviewCard">
-          <div class="overviewTop">
-            <div>
-              <div class="overviewTitle">Saúde do Plano</div>
-              <div class="overviewSubtitle">Alertas + potência vs limite do edifício.</div>
+            <div class="miniGrid">
+              <div class="miniCard">
+                <div class="miniLabel">Ativos</div>
+                <div class="miniValue" id="kpiActive">0</div>
+              </div>
+              <div class="miniCard">
+                <div class="miniLabel">A carregar</div>
+                <div class="miniValue" id="kpiCharging">0</div>
+              </div>
+              <div class="miniCard">
+                <div class="miniLabel">Em rota</div>
+                <div class="miniValue" id="kpiOnRoute">0</div>
+              </div>
+              <div class="miniCard">
+                <div class="miniLabel">Críticos</div>
+                <div class="miniValue" id="kpiCritical">0</div>
+              </div>
             </div>
-          </div>
+          </section>
 
-          <div class="overviewStats" style="grid-template-columns: 1fr 1fr;">
-            <div class="statBox">
-              <div class="statLabel">Alertas totais</div>
-              <div class="statValue" id="ovAlerts">—</div>
-            </div>
-            <div class="statBox">
-              <div class="statLabel">Potência / limite</div>
-              <div class="statValue" id="ovPower">—</div>
-            </div>
-          </div>
+          <section class="card">
+            <h2>Saúde do Plano</h2>
+            <div class="muted">Alertas + potência vs limite do edifício.</div>
 
-          <div class="toolbar" style="margin-top:12px;">
-            <div class="left">
-              <span class="muted" id="ovHint">Gera um plano para atualizar indicadores.</span>
-            </div>
-          </div>
-        </section>
-      </div>
+            <div class="planGrid">
+              <div class="miniCard">
+                <div class="miniLabel">Alertas totais</div>
+                <div class="miniValue" id="kpiAlertsTop">0</div>
+              </div>
 
-      <div class="viewGrid">
-        <section class="card">
+              <!-- ✅ aqui fica vermelho ao chegar a 80% -->
+              <div class="miniCard" id="powerLimitCard">
+                <div class="miniLabel">
+                  <span>Potência / limite</span>
+                  <span class="tag" id="powerPctTag">0%</span>
+                </div>
+                <div class="miniValue"><span id="kpiPowerNow">0.0</span> / <span id="kpiPowerLimit">60</span> kW</div>
+                <div class="miniSubWarn" id="powerWarnTxt">Aviso: ≥ 80% do limite!</div>
+              </div>
+            </div>
+
+            <div class="muted" style="margin-top:10px;">Gera um plano para atualizar indicadores.</div>
+          </section>
+        </div>
+
+        <!-- ✅ ESQUERDA: Rotas + (agora) Resposta/Explicações em separadores para ocupar o espaço -->
+        <section class="card opsBottomLeft">
           <h2>Operação</h2>
+          <div class="muted">Rotas do dia + gerar plano.</div>
 
           <div class="toolbar">
             <div class="left">
               <h2 style="margin:0;">Rotas</h2>
+              <span class="small">Uma rota por veículo (por agora)</span>
             </div>
             <div class="right">
               <button id="btnAddRoute" type="button">+ Adicionar rota</button>
             </div>
           </div>
 
-          <table id="tblRoutes">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Veículo</th>
-                <th>Início</th>
-                <th>Fim</th>
-                <th>ETA (min)</th>
-                <th>Consumo (kWh)</th>
-                <th>SoC min</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <div class="tableWrap">
+            <table id="tblRoutes">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Veículo</th>
+                  <th>Início</th>
+                  <th>Fim</th>
+                  <th>ETA (min)</th>
+                  <th>Consumo (kWh)</th>
+                  <th>SoC min</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
 
-          <div class="toolbar" style="margin-top:14px;">
+          <!-- ✅ NOVO: Resposta completa por tópicos (não parece código) -->
+          <details class="accordion" id="accResponse">
+            <summary>
+              <span>Resposta completa</span>
+              <span class="muted" id="respMeta">—</span>
+            </summary>
+            <div class="accBody">
+              <div class="accHint">Abre para ver por tópicos (comandos, alertas e resumo).</div>
+              <div id="responseTopics" class="scrollBox"></div>
+            </div>
+          </details>
+
+          <!-- ✅ NOVO: Explicações por veículo (botão -> veículos -> detalhes) -->
+          <details class="accordion" id="accExplain">
+            <summary>
+              <span>Explicações por veículo</span>
+              <span class="muted" id="expMeta">—</span>
+            </summary>
+            <div class="accBody">
+              <div class="accHint">Carrega num veículo para ver a explicação (tabela).</div>
+              <div id="explainAccordion" class="scrollBox"></div>
+            </div>
+          </details>
+
+          <div class="toolbar" style="margin-top:12px;">
             <div class="left muted" id="hint">Gera o plano para atualizar comandos e horários.</div>
             <div class="right"></div>
           </div>
         </section>
 
-        <section class="card">
+        <!-- ✅ DIREITA: KPIs + tabela de schedule (compacto) -->
+        <section class="card opsBottomRight">
           <h2>Resultados</h2>
 
-          <!-- ===== KPIs NOVOS ===== -->
-          <div class="kpi">
-            <div class="kpiCard" id="kpiCardKw">
-              <div class="kpiTop">
-                <div>
-                  <div class="kpiLab">Potência total</div>
-                  <div class="kpiVal" id="kpiKw">—</div>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
-                  <div class="kpiDelta neu" id="deltaKw">—</div>
-                </div>
+          <div class="kpiRow">
+            <div class="kpiCard kpiBlue">
+              <div class="kpiTitle">
+                <span>Potência total</span>
+                <span class="kpiIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M13 2L3 14h7l-1 8 12-14h-7l-1-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  </svg>
+                </span>
               </div>
-              <div class="spark" aria-hidden="true">
-                <svg viewBox="0 0 100 26" preserveAspectRatio="none">
-                  <polygon class="area" id="areaKw" points=""></polygon>
-                  <polyline id="sparkKw" points=""></polyline>
-                </svg>
-              </div>
+              <div class="kpiValue"><span id="kpiPowerCard">0.0</span></div>
+              <div class="kpiPillSm">—</div>
             </div>
 
-            <div class="kpiCard" id="kpiCardCmds">
-              <div class="kpiTop">
-                <div>
-                  <div class="kpiLab">Comandos</div>
-                  <div class="kpiVal" id="kpiCmds">—</div>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
-                  <div class="kpiDelta neu" id="deltaCmds">—</div>
-                </div>
+            <div class="kpiCard kpiGold">
+              <div class="kpiTitle">
+                <span>Comandos</span>
+                <span class="kpiIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7 4v10M17 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M5 14h4M15 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M7 20v-6M17 20v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </span>
               </div>
-              <div class="spark" aria-hidden="true">
-                <svg viewBox="0 0 100 26" preserveAspectRatio="none">
-                  <polygon class="area" id="areaCmds" points=""></polygon>
-                  <polyline id="sparkCmds" points=""></polyline>
-                </svg>
-              </div>
+              <div class="kpiValue"><span id="kpiCommandsCard">0</span></div>
+              <div class="kpiPillSm">—</div>
             </div>
 
-            <div class="kpiCard" id="kpiCardAlerts">
-              <div class="kpiTop">
-                <div>
-                  <div class="kpiLab">Alertas</div>
-                  <div class="kpiVal" id="kpiAlerts">—</div>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
-                  <div class="kpiDelta neu" id="deltaAlerts">—</div>
-                </div>
+            <div class="kpiCard kpiAmber">
+              <div class="kpiTitle">
+                <span>Alertas</span>
+                <span class="kpiIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 9v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M10.3 4.3 2.9 18.1A2 2 0 0 0 4.7 21h14.6a2 2 0 0 0 1.8-2.9L13.7 4.3a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  </svg>
+                </span>
               </div>
-              <div class="spark" aria-hidden="true">
-                <svg viewBox="0 0 100 26" preserveAspectRatio="none">
-                  <polygon class="area" id="areaAlerts" points=""></polygon>
-                  <polyline id="sparkAlerts" points=""></polyline>
-                </svg>
-              </div>
+              <div class="kpiValue"><span id="kpiAlertsCard">0</span></div>
+              <div class="kpiPillSm">—</div>
             </div>
           </div>
 
-          <label style="margin-top:12px;">Plano de Carregamento (por carregador)</label>
-          <table id="tblSchedule">
-            <thead>
-              <tr>
-                <th>Carregador</th>
-                <th>Veículo</th>
-                <th>Início</th>
-                <th>Fim (estimado)</th>
-                <th>kW</th>
-                <th>Motivo</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <label style="margin-top:10px;">Plano de Carregamento (por carregador)</label>
+          <div class="tableWrap">
+            <table id="tblSchedule">
+              <thead>
+                <tr>
+                  <th>Carregador</th>
+                  <th>Veículo</th>
+                  <th>Início</th>
+                  <th>Fim (estimado)</th>
+                  <th>kW</th>
+                  <th>Motivo</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
 
-          <label style="margin-top:12px;">Resposta completa</label>
-          <pre id="output">{}</pre>
-
-          <label style="margin-top:12px;">Explicações (por veículo)</label>
-          <pre id="explain">{}</pre>
+          <div class="muted" style="margin-top:10px;">
+            As secções “Resposta completa” e “Explicações por veículo” estão do lado esquerdo para caber tudo numa página.
+          </div>
         </section>
+
       </div>
     </div>
   </main>
@@ -950,12 +1090,10 @@
     const WS_URL = (window.location.protocol === "https:" ? "wss://" : "ws://") + window.location.host + "/ws";
 
     // -------------------- State --------------------
-    let chargers = [
-      { id: "C1", max_kw: 22, enabled: true, efficiency: 0.92 }
-    ];
+    let chargers = [{ id: "C1", max_kw: 22, enabled: true, efficiency: 0.92 }];
 
     let vehicles = [
-      { id: "V1", battery_kwh: 75, soc: 0.30, soh: 0.95, temp_c: 28, state: "DISPONIVEL", charger_id: "C1" }
+      { id: "V1", battery_kwh: 75, soc: 0.30, soh: 0.95, temp_c: 28, state: "DISPONIVEL", charger_id: "" }
     ];
 
     let routes = [
@@ -970,16 +1108,12 @@
 
     let ws = null;
     let popupHistory = [];
+    let lastPlan = null;
 
     // -------------------- Helpers --------------------
     const $ = (id) => document.getElementById(id);
 
-    function escapeHtml(s) {
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;");
-    }
+    function nowIsoLocalNoTZ() { return new Date().toISOString().slice(0, 19); }
 
     function toast(msg, kind="good") {
       const host = $("toasts");
@@ -989,6 +1123,10 @@
       host.appendChild(el);
       setTimeout(() => { el.style.opacity = "0"; el.style.transition = "opacity .25s"; }, 4200);
       setTimeout(() => host.removeChild(el), 4600);
+    }
+
+    function escapeHtml(s) {
+      return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
     }
 
     function setApiStatus(ok, text) {
@@ -1003,157 +1141,24 @@
       try {
         const d = new Date(iso);
         return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-      } catch {
-        return "—";
-      }
+      } catch { return "—"; }
     }
 
-    function toNum(x, fallback = 0) {
+    function safeNum(x, fallback=0){
       const n = Number(x);
       return Number.isFinite(n) ? n : fallback;
     }
 
-    // -------------------- DATETIME (NOVO: fácil de preencher) --------------------
-    // O input datetime-local devolve "YYYY-MM-DDTHH:MM" (sem segundos).
-    // O backend costuma gostar de "YYYY-MM-DDTHH:MM:SS".
-    function dtLocalToIsoNoTZ(dtLocal) {
-      const s = String(dtLocal || "").trim();
+    function isoToDatetimeLocal(iso) {
+      const s = String(iso || "").trim();
       if (!s) return "";
-      // já vem com "T"
-      return s.length === 16 ? (s + ":00") : s; // adiciona segundos
+      return s.slice(0,16);
     }
 
-    // Converte "YYYY-MM-DDTHH:MM:SS" -> "YYYY-MM-DDTHH:MM" para preencher o input
-    function isoNoTZToDtLocal(isoNoTZ) {
-      const s = String(isoNoTZ || "").trim();
+    function datetimeLocalToIso(v) {
+      const s = String(v || "").trim();
       if (!s) return "";
-      // corta segundos (se existirem)
-      return s.slice(0, 16);
-    }
-
-    // Hora "agora" local em formato para input datetime-local
-    function nowDtLocal() {
-      const d = new Date();
-      const pad = (n) => String(n).padStart(2, "0");
-      const yyyy = d.getFullYear();
-      const mm = pad(d.getMonth() + 1);
-      const dd = pad(d.getDate());
-      const hh = pad(d.getHours());
-      const mi = pad(d.getMinutes());
-      return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
-    }
-
-    // -------------------- KPI utils --------------------
-    const KPI_STORE_KEY = "vw_kpi_history_v1";
-
-    function loadKpiHistory() {
-      const raw = localStorage.getItem(KPI_STORE_KEY);
-      if (!raw) return { kw: [], cmds: [], alerts: [], last: null };
-      try {
-        const x = JSON.parse(raw);
-        return {
-          kw: Array.isArray(x.kw) ? x.kw : [],
-          cmds: Array.isArray(x.cmds) ? x.cmds : [],
-          alerts: Array.isArray(x.alerts) ? x.alerts : [],
-          last: x.last ?? null
-        };
-      } catch {
-        return { kw: [], cmds: [], alerts: [], last: null };
-      }
-    }
-
-    function saveKpiHistory(h) {
-      localStorage.setItem(KPI_STORE_KEY, JSON.stringify(h));
-    }
-
-    function clampHistory(arr, maxN=18) {
-      return Array.isArray(arr) ? arr.slice(-maxN) : [];
-    }
-
-    function setDelta(elId, delta) {
-      const el = $(elId);
-      if (!el) return;
-
-      if (delta === null || !Number.isFinite(delta)) {
-        el.textContent = "—";
-        el.className = "kpiDelta neu";
-        return;
-      }
-
-      const sign = delta > 0 ? "+" : (delta < 0 ? "−" : "±");
-      const abs = Math.abs(delta);
-      el.textContent = `${sign}${abs}`;
-      if (delta > 0) el.className = "kpiDelta good";
-      else if (delta < 0) el.className = "kpiDelta bad";
-      else el.className = "kpiDelta neu";
-    }
-
-    function makeSparkPoints(values) {
-      const vals = (values || []).map(Number).filter(v => Number.isFinite(v));
-      if (vals.length === 0) return { line:"", area:"" };
-      const minV = Math.min(...vals);
-      const maxV = Math.max(...vals);
-      const span = (maxV - minV) || 1;
-
-      const W = 100, H = 26;
-      const padY = 3;
-
-      const pts = vals.map((v, i) => {
-        const x = (vals.length === 1) ? 50 : (i * (W / (vals.length - 1)));
-        const y = (H - padY) - ((v - minV) / span) * (H - padY*2);
-        return [x.toFixed(2), y.toFixed(2)];
-      });
-
-      const line = pts.map(p => p.join(",")).join(" ");
-      const area = `0,${H} ` + pts.map(p => p.join(",")).join(" ") + ` ${W},${H}`;
-      return { line, area };
-    }
-
-    function renderSpark(lineId, areaId, values) {
-      const l = $(lineId);
-      const a = $(areaId);
-      if (!l || !a) return;
-      const pts = makeSparkPoints(values);
-      l.setAttribute("points", pts.line);
-      a.setAttribute("points", pts.area);
-    }
-
-    function updateKpisFromPlan(data) {
-      const kw = Number(data.total_kw ?? 0);
-      const cmds = Number((data.commands && data.commands.length) ? data.commands.length : 0);
-      const alerts = Number((data.alerts && data.alerts.length) ? data.alerts.length : 0);
-
-      $("kpiKw").textContent = Number.isFinite(kw) ? kw.toFixed(1) : "—";
-      $("kpiCmds").textContent = Number.isFinite(cmds) ? String(cmds) : "—";
-      $("kpiAlerts").textContent = Number.isFinite(alerts) ? String(alerts) : "—";
-
-      const hist = loadKpiHistory();
-      const last = hist.last;
-
-      setDelta("deltaKw", last ? (kw - Number(last.kw ?? 0)) : null);
-      setDelta("deltaCmds", last ? (cmds - Number(last.cmds ?? 0)) : null);
-      setDelta("deltaAlerts", last ? (alerts - Number(last.alerts ?? 0)) : null);
-
-      hist.kw = clampHistory(hist.kw.concat([kw]));
-      hist.cmds = clampHistory(hist.cmds.concat([cmds]));
-      hist.alerts = clampHistory(hist.alerts.concat([alerts]));
-      hist.last = { kw, cmds, alerts, ts: new Date().toISOString() };
-      saveKpiHistory(hist);
-
-      renderSpark("sparkKw", "areaKw", hist.kw);
-      renderSpark("sparkCmds", "areaCmds", hist.cmds);
-      renderSpark("sparkAlerts", "areaAlerts", hist.alerts);
-    }
-
-    function initKpiSparks() {
-      const hist = loadKpiHistory();
-      renderSpark("sparkKw", "areaKw", clampHistory(hist.kw));
-      renderSpark("sparkCmds", "areaCmds", clampHistory(hist.cmds));
-      renderSpark("sparkAlerts", "areaAlerts", clampHistory(hist.alerts));
-
-      setDelta("deltaKw", null);
-      setDelta("deltaCmds", null);
-      setDelta("deltaAlerts", null);
+      return (s.length === 16) ? (s + ":00") : s;
     }
 
     // -------------------- Tabs --------------------
@@ -1161,13 +1166,10 @@
       const isConfig = name === "config";
       $("viewConfig").style.display = isConfig ? "block" : "none";
       $("viewOps").style.display = isConfig ? "none" : "block";
-
       $("tabConfig").classList.toggle("active", isConfig);
       $("tabOps").classList.toggle("active", !isConfig);
-
       localStorage.setItem("fleet_ai_tab", isConfig ? "config" : "ops");
     }
-
     $("tabConfig").addEventListener("click", () => setTab("config"));
     $("tabOps").addEventListener("click", () => setTab("ops"));
 
@@ -1179,14 +1181,9 @@
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><input value="${c.id}" data-k="id" data-i="${idx}" /></td>
-          <td><input type="number" step="1" value="${c.max_kw}" data-k="max_kw" data-i="${idx}" /></td>
-          <td>
-            <div class="switch">
-              <input type="checkbox" ${c.enabled ? "checked":""} data-k="enabled" data-i="${idx}" />
-              <span>${c.enabled ? "Sim" : "Não"}</span>
-            </div>
-          </td>
-          <td><input type="number" step="0.01" min="0" max="1" value="${c.efficiency}" data-k="efficiency" data-i="${idx}" /></td>
+          <td><input class="numMd" type="number" step="1" value="${c.max_kw}" data-k="max_kw" data-i="${idx}" /></td>
+          <td><input type="checkbox" ${c.enabled ? "checked":""} data-k="enabled" data-i="${idx}" /></td>
+          <td><input class="numMd" type="number" step="0.01" min="0" max="1" value="${c.efficiency}" data-k="efficiency" data-i="${idx}" /></td>
           <td><button class="danger" data-del="charger" data-i="${idx}" type="button">Remover</button></td>
         `;
         tb.appendChild(tr);
@@ -1197,17 +1194,17 @@
       const tb = $("tblVehicles").querySelector("tbody");
       tb.innerHTML = "";
       vehicles.forEach((v, idx) => {
-        const chargerOptions = [`<option value="">(nenhum)</option>`]
+        const chargerOptions = [`<option value="">(auto / nenhum)</option>`]
           .concat(chargers.map(c => `<option value="${c.id}" ${v.charger_id===c.id ? "selected":""}>${c.id}</option>`))
           .join("");
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><input value="${v.id}" data-k="id" data-i="${idx}" /></td>
-          <td><input type="number" step="1" value="${v.battery_kwh}" data-k="battery_kwh" data-i="${idx}" /></td>
-          <td><input type="number" step="0.01" min="0" max="1" value="${v.soc}" data-k="soc" data-i="${idx}" /></td>
-          <td><input type="number" step="0.01" min="0" max="1" value="${v.soh}" data-k="soh" data-i="${idx}" /></td>
-          <td><input type="number" step="1" value="${v.temp_c}" data-k="temp_c" data-i="${idx}" /></td>
+          <td><input class="numMd" type="number" step="1" value="${v.battery_kwh}" data-k="battery_kwh" data-i="${idx}" /></td>
+          <td><input class="numMd" type="number" step="0.01" min="0" max="1" value="${v.soc}" data-k="soc" data-i="${idx}" /></td>
+          <td><input class="numMd" type="number" step="0.01" min="0" max="1" value="${v.soh}" data-k="soh" data-i="${idx}" /></td>
+          <td><input class="numSm" type="number" step="1" value="${v.temp_c}" data-k="temp_c" data-i="${idx}" /></td>
           <td>
             <select data-k="state" data-i="${idx}">
               <option value="DISPONIVEL" ${v.state==="DISPONIVEL"?"selected":""}>DISPONIVEL</option>
@@ -1215,9 +1212,7 @@
               <option value="MANUTENCAO" ${v.state==="MANUTENCAO"?"selected":""}>MANUTENCAO</option>
             </select>
           </td>
-          <td>
-            <select data-k="charger_id" data-i="${idx}">${chargerOptions}</select>
-          </td>
+          <td><select data-k="charger_id" data-i="${idx}">${chargerOptions}</select></td>
           <td><button class="danger" data-del="vehicle" data-i="${idx}" type="button">Remover</button></td>
         `;
         tb.appendChild(tr);
@@ -1233,14 +1228,11 @@
         tr.innerHTML = `
           <td><input value="${r.id}" data-k="id" data-i="${idx}" /></td>
           <td><select data-k="vehicle_id" data-i="${idx}">${vehicleOptions}</select></td>
-
-          <!-- ✅ MAIS FÁCIL: datetime-local -->
-          <td><input type="datetime-local" value="${isoNoTZToDtLocal(r.start_time)}" data-k="start_time" data-i="${idx}" /></td>
-          <td><input type="datetime-local" value="${isoNoTZToDtLocal(r.end_time)}" data-k="end_time" data-i="${idx}" /></td>
-
-          <td><input type="number" step="1" value="${r.eta_minutes}" data-k="eta_minutes" data-i="${idx}" /></td>
-          <td><input type="number" step="0.1" value="${r.consumption_kwh}" data-k="consumption_kwh" data-i="${idx}" /></td>
-          <td><input type="number" step="0.01" min="0" max="1" value="${r.required_soc_min}" data-k="required_soc_min" data-i="${idx}" /></td>
+          <td><input class="dtInput" type="datetime-local" value="${isoToDatetimeLocal(r.start_time)}" data-k="start_time" data-i="${idx}" /></td>
+          <td><input class="dtInput" type="datetime-local" value="${isoToDatetimeLocal(r.end_time)}" data-k="end_time" data-i="${idx}" /></td>
+          <td><input class="numSm" type="number" step="1" value="${r.eta_minutes}" data-k="eta_minutes" data-i="${idx}" /></td>
+          <td><input class="numMd" type="number" step="0.1" value="${r.consumption_kwh}" data-k="consumption_kwh" data-i="${idx}" /></td>
+          <td><input class="numMd" type="number" step="0.01" min="0" max="1" value="${r.required_soc_min}" data-k="required_soc_min" data-i="${idx}" /></td>
           <td><button class="danger" data-del="route" data-i="${idx}" type="button">Remover</button></td>
         `;
         tb.appendChild(tr);
@@ -1253,10 +1245,8 @@
       prices.forEach((p, idx) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <!-- ✅ MAIS FÁCIL: datetime-local -->
-          <td><input type="datetime-local" value="${isoNoTZToDtLocal(p.ts)}" data-k="ts" data-i="${idx}" /></td>
-
-          <td><input type="number" step="0.001" value="${p.eur_per_kwh}" data-k="eur_per_kwh" data-i="${idx}" /></td>
+          <td><input value="${p.ts}" data-k="ts" data-i="${idx}" /></td>
+          <td><input class="numMd" type="number" step="0.001" value="${p.eur_per_kwh}" data-k="eur_per_kwh" data-i="${idx}" /></td>
           <td><button class="danger" data-del="price" data-i="${idx}" type="button">Remover</button></td>
         `;
         tb.appendChild(tr);
@@ -1268,17 +1258,234 @@
       renderVehicles();
       renderRoutes();
       renderPrices();
+      updateDashboardKpis();
     }
 
-    // -------------------- Persistência (LocalStorage) --------------------
+    // -------------------- NOVO: render “Resposta completa” por tópicos --------------------
+    function makeKvGrid(obj){
+      const wrap = document.createElement("div");
+      wrap.className = "kvGrid";
+      for (const [k, v] of Object.entries(obj || {})) {
+        const kEl = document.createElement("div");
+        kEl.className = "kvKey";
+        kEl.textContent = k;
+
+        const vEl = document.createElement("div");
+        vEl.className = "kvVal";
+        vEl.textContent = (typeof v === "object" && v !== null)
+          ? JSON.stringify(v)
+          : String(v);
+
+        wrap.appendChild(kEl);
+        wrap.appendChild(vEl);
+      }
+      return wrap;
+    }
+
+    function renderResponseTopics(plan){
+      const host = $("responseTopics");
+      host.innerHTML = "";
+
+      if (!plan || Object.keys(plan).length === 0) {
+        host.innerHTML = `<div class="muted" style="font-weight:900;">Sem dados ainda. Clica em “Gerar Plano”.</div>`;
+        $("respMeta").textContent = "—";
+        return;
+      }
+
+      const ts = plan.timestamp || plan.now || "";
+      const totalKw = (plan.total_kw != null) ? safeNum(plan.total_kw, 0) : null;
+      const commands = Array.isArray(plan.commands) ? plan.commands : [];
+      const alerts = Array.isArray(plan.alerts) ? plan.alerts : [];
+
+      $("respMeta").textContent = ts ? `• ${ts}` : `• ${commands.length} comandos`;
+
+      // Tags resumo
+      const tags = document.createElement("div");
+      tags.innerHTML = `
+        <span class="tag">Comandos: ${commands.length}</span>
+        <span class="tag">Alertas: ${alerts.length}</span>
+        <span class="tag">Potência: ${(totalKw==null? "—" : totalKw.toFixed(1))} kW</span>
+      `;
+      host.appendChild(tags);
+
+      // Secção: Resumo (timestamp / total / etc)
+      const summary = document.createElement("div");
+      summary.style.marginTop = "10px";
+      summary.appendChild(makeKvGrid({
+        timestamp: ts || "—",
+        total_kw: (totalKw==null ? "—" : totalKw.toFixed(3)),
+        source: plan.source || plan.price_source || "—",
+        ok: (plan.ok != null ? String(plan.ok) : "—")
+      }));
+      host.appendChild(summary);
+
+      // Secção: Alertas
+      const alertBox = document.createElement("div");
+      alertBox.className = "subDetails";
+      const alertDetails = document.createElement("details");
+      alertDetails.open = (alerts.length > 0);
+      alertDetails.className = "subDetails";
+      alertDetails.innerHTML = `<summary>Alertas (${alerts.length}) <span class="muted">clique para abrir</span></summary>`;
+      const alertBody = document.createElement("div");
+      alertBody.style.padding = "10px 12px";
+      if (alerts.length === 0) {
+        alertBody.innerHTML = `<div class="muted" style="font-weight:900;">Sem alertas.</div>`;
+      } else {
+        const ul = document.createElement("ul");
+        ul.style.margin = "0";
+        ul.style.paddingLeft = "18px";
+        ul.style.fontSize = "12px";
+        ul.style.fontWeight = "900";
+        ul.style.color = "#0f172a";
+        alerts.forEach(a => {
+          const li = document.createElement("li");
+          li.textContent = String(a);
+          ul.appendChild(li);
+        });
+        alertBody.appendChild(ul);
+      }
+      alertDetails.appendChild(alertBody);
+      host.appendChild(alertDetails);
+
+      // Secção: Comandos (tabela)
+      const cmdDetails = document.createElement("details");
+      cmdDetails.className = "subDetails";
+      cmdDetails.open = true;
+      cmdDetails.innerHTML = `<summary>Comandos (${commands.length}) <span class="muted">clique para abrir</span></summary>`;
+      const cmdBody = document.createElement("div");
+      cmdBody.style.padding = "10px 12px";
+
+      if (commands.length === 0) {
+        cmdBody.innerHTML = `<div class="muted" style="font-weight:900;">Sem carregamentos planeados neste momento.</div>`;
+      } else {
+        const t = document.createElement("table");
+        t.style.width = "100%";
+        t.style.minWidth = "0";
+        t.innerHTML = `
+          <thead>
+            <tr>
+              <th>Veículo</th>
+              <th>Carregador</th>
+              <th>kW</th>
+              <th>Motivo</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `;
+        const tb = t.querySelector("tbody");
+        commands.forEach(c => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${escapeHtml(c.vehicle_id ?? "—")}</td>
+            <td>${escapeHtml(c.charger_id ?? "—")}</td>
+            <td>${(c.set_kw != null) ? safeNum(c.set_kw, 0).toFixed(1) : "—"}</td>
+            <td style="white-space:normal;">${escapeHtml(c.reason ?? "")}</td>
+          `;
+          tb.appendChild(tr);
+        });
+        cmdBody.appendChild(t);
+      }
+
+      cmdDetails.appendChild(cmdBody);
+      host.appendChild(cmdDetails);
+    }
+
+    // -------------------- NOVO: render “Explicações por veículo” (accordion) --------------------
+    function renderExplainAccordion(explanations){
+      const host = $("explainAccordion");
+      host.innerHTML = "";
+
+      const exp = explanations && typeof explanations === "object" ? explanations : {};
+      const vids = Object.keys(exp);
+
+      $("expMeta").textContent = vids.length ? `• ${vids.length} veículo(s)` : "—";
+
+      if (vids.length === 0) {
+        host.innerHTML = `<div class="muted" style="font-weight:900;">Sem explicações ainda. Clica em “Gerar Plano”.</div>`;
+        return;
+      }
+
+      vids.sort().forEach(vid => {
+        const d = document.createElement("details");
+        d.className = "subDetails";
+        d.innerHTML = `<summary>${escapeHtml(vid)} <span class="muted">clique para abrir</span></summary>`;
+        const body = document.createElement("div");
+        body.style.padding = "10px 12px";
+        body.appendChild(makeKvGrid(exp[vid] || {}));
+        d.appendChild(body);
+        host.appendChild(d);
+      });
+    }
+
+    // -------------------- KPIs + alerta 80% --------------------
+    function calcCriticalCount(){
+      let critical = 0;
+      for (const v of vehicles){
+        if (v.state === "MANUTENCAO") { critical++; continue; }
+        const r = routes.find(x => x.vehicle_id === v.id);
+        if (r && safeNum(v.soc) < safeNum(r.required_soc_min)) critical++;
+      }
+      return critical;
+    }
+
+    function updateFleetChip(ok){
+      const chip = $("fleetChip");
+      chip.classList.toggle("warn", !ok);
+      $("fleetStateText").textContent = ok ? "Estado: OK" : "Estado: Atenção";
+    }
+
+    function updatePowerLimitVisual(totalKw, limit){
+      const card = $("powerLimitCard");
+      const pct = limit > 0 ? Math.round((totalKw / limit) * 100) : 0;
+      $("powerPctTag").textContent = `${pct}%`;
+
+      const warn = (limit > 0) && ((totalKw / limit) >= 0.80);
+      card.classList.toggle("danger", warn);
+      $("powerWarnTxt").style.display = warn ? "block" : "none";
+    }
+
+    function updateDashboardKpis(){
+      const active = vehicles.length;
+      const onRoute = vehicles.filter(v => v.state === "EM_ROTA").length;
+
+      const planCommands = Array.isArray(lastPlan?.commands) ? lastPlan.commands : [];
+      const vehiclesChargingByPlan = new Set(planCommands.map(c => c.vehicle_id).filter(Boolean));
+      const charging = vehicles.filter(v => (v.charger_id && String(v.charger_id).trim() !== "") || vehiclesChargingByPlan.has(v.id)).length;
+
+      const critical = calcCriticalCount();
+
+      $("kpiActive").textContent = String(active);
+      $("kpiOnRoute").textContent = String(onRoute);
+      $("kpiCharging").textContent = String(charging);
+      $("kpiCritical").textContent = String(critical);
+
+      const alerts = Array.isArray(lastPlan?.alerts) ? lastPlan.alerts.length : 0;
+
+      let totalKw = 0;
+      if (lastPlan && lastPlan.total_kw != null) totalKw = safeNum(lastPlan.total_kw, 0);
+      else totalKw = planCommands.reduce((acc, c) => acc + safeNum(c.set_kw, 0), 0);
+
+      const limit = safeNum($("siteMaxKw")?.value, 60);
+
+      $("kpiAlertsTop").textContent = String(alerts);
+      $("kpiPowerNow").textContent = totalKw.toFixed(1);
+      $("kpiPowerLimit").textContent = String(limit);
+
+      updatePowerLimitVisual(totalKw, limit);
+
+      $("kpiPowerCard").textContent = totalKw.toFixed(1);
+      $("kpiCommandsCard").textContent = String(planCommands.length);
+      $("kpiAlertsCard").textContent = String(alerts);
+
+      updateFleetChip((critical === 0) && (alerts === 0));
+    }
+
+    // -------------------- Persistência --------------------
     const STORAGE_KEY = "fleet_ai_state_v1";
 
     function saveState() {
       const state = {
-        chargers,
-        vehicles,
-        routes,
-        prices,
+        chargers, vehicles, routes, prices,
         siteMaxKw: $("siteMaxKw")?.value ?? 60,
         nowOverride: $("nowOverride")?.value ?? ""
       };
@@ -1295,44 +1502,36 @@
         routes = s.routes ?? routes;
         prices = s.prices ?? prices;
         if (s.siteMaxKw != null) $("siteMaxKw").value = s.siteMaxKw;
-
-        // agoraOverride é datetime-local -> guardamos e repomos direto
         if (s.nowOverride != null) $("nowOverride").value = s.nowOverride;
-
         return true;
-      } catch {
-        return false;
-      }
+      } catch { return false; }
     }
 
-    // -------------------- Table interactions --------------------
+    // -------------------- Interações --------------------
     document.addEventListener("input", (e) => {
       const t = e.target;
       const k = t.getAttribute("data-k");
       const i = t.getAttribute("data-i");
-
       if (k === null || i === null) {
-        if (t.id === "siteMaxKw" || t.id === "nowOverride") saveState();
+        if (t.id === "siteMaxKw" || t.id === "nowOverride") {
+          saveState();
+          updateDashboardKpis();
+        }
         return;
       }
 
-      const tr = t.closest("tr");
       const table = t.closest("table")?.id;
       const idx = Number(i);
 
-      function setObj(arr, idx, key, value) {
-        if (!arr[idx]) return;
-        arr[idx][key] = value;
-      }
+      function setObj(arr, idx, key, value) { if (arr[idx]) arr[idx][key] = value; }
 
       let val;
       if (t.type === "checkbox") val = t.checked;
       else if (t.type === "number") val = Number(t.value);
       else val = t.value;
 
-      // ✅ converter datetime-local para iso sem TZ (com segundos)
-      if (t.type === "datetime-local") {
-        val = dtLocalToIsoNoTZ(val);
+      if (table === "tblRoutes" && (k === "start_time" || k === "end_time")) {
+        val = datetimeLocalToIso(val);
       }
 
       if (table === "tblChargers") setObj(chargers, idx, k, val);
@@ -1340,17 +1539,13 @@
       if (table === "tblRoutes")   setObj(routes, idx, k, val);
       if (table === "tblPrices")   setObj(prices, idx, k, val);
 
-      if (t.type === "checkbox") {
-        const label = tr.querySelector(".switch span");
-        if (label) label.textContent = t.checked ? "Sim" : "Não";
-      }
-
       if (table === "tblChargers" || table === "tblVehicles") {
         renderVehicles();
         renderRoutes();
       }
 
       saveState();
+      updateDashboardKpis();
       applySearchFilter(($("searchInput")?.value ?? "").trim());
     });
 
@@ -1373,21 +1568,18 @@
       }
     });
 
-    // Add buttons
     $("btnAddCharger").addEventListener("click", () => {
       const n = chargers.length + 1;
       chargers.push({ id: `C${n}`, max_kw: 11, enabled: true, efficiency: 0.90 });
-      renderAll();
-      saveState();
+      renderAll(); saveState();
       applySearchFilter(($("searchInput")?.value ?? "").trim());
       toast("Carregador adicionado.", "good");
     });
 
     $("btnAddVehicle").addEventListener("click", () => {
       const n = vehicles.length + 1;
-      vehicles.push({ id: `V${n}`, battery_kwh: 60, soc: 0.40, soh: 0.93, temp_c: 28, state: "DISPONIVEL", charger_id: chargers[0]?.id || "" });
-      renderAll();
-      saveState();
+      vehicles.push({ id: `V${n}`, battery_kwh: 60, soc: 0.40, soh: 0.93, temp_c: 28, state: "DISPONIVEL", charger_id: "" });
+      renderAll(); saveState();
       applySearchFilter(($("searchInput")?.value ?? "").trim());
       toast("Veículo adicionado.", "good");
     });
@@ -1395,39 +1587,33 @@
     $("btnAddRoute").addEventListener("click", () => {
       const n = routes.length + 1;
       const v = vehicles[0]?.id || `V1`;
-      const start = dtLocalToIsoNoTZ(nowDtLocal());
-      // fim default: +1h
-      const d = new Date();
-      d.setHours(d.getHours() + 1);
-      const pad = (x)=>String(x).padStart(2,"0");
-      const endLocal = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      const end = dtLocalToIsoNoTZ(endLocal);
+      const start = new Date(Date.now() + 60*60*1000);
+      const end = new Date(Date.now() + 2*60*60*1000);
 
       routes.push({
         id: `R${n}`,
         vehicle_id: v,
-        start_time: start,
-        end_time: end,
+        start_time: start.toISOString().slice(0,19),
+        end_time: end.toISOString().slice(0,19),
         eta_minutes: 60,
         consumption_kwh: 15,
         required_soc_min: 0.55,
         distance_km: 70
       });
-      renderAll();
-      saveState();
+
+      renderAll(); saveState();
       applySearchFilter(($("searchInput")?.value ?? "").trim());
       toast("Rota adicionada.", "good");
     });
 
     $("btnAddPrice").addEventListener("click", () => {
-      prices.push({ ts: dtLocalToIsoNoTZ(nowDtLocal()), eur_per_kwh: 0.20 });
-      renderAll();
-      saveState();
+      prices.push({ ts: nowIsoLocalNoTZ(), eur_per_kwh: 0.20 });
+      renderAll(); saveState();
       applySearchFilter(($("searchInput")?.value ?? "").trim());
       toast("Preço adicionado.", "good");
     });
 
-    // -------------------- API calls --------------------
+    // -------------------- API --------------------
     async function pingApi() {
       try {
         const r = await fetch(`${API_BASE}/health`, { method: "GET" });
@@ -1456,22 +1642,11 @@
 
         const raw = Number(data.eur_per_kwh);
         const src = data.source || "?";
-        const absShown = Math.abs(raw);
 
-        if (raw < 0) {
-          pill.textContent = `Preço agora: -€${absShown.toFixed(4)}/kWh (${src})`;
-          pill.title = `Preço spot negativo. Valor bruto: ${raw}`;
-          pill.style.borderColor = "rgba(22,163,74,0.55)";
-        } else {
-          pill.textContent = `Preço agora: €${raw.toFixed(4)}/kWh (${src})`;
-          pill.title = `Valor bruto: ${raw}`;
-
-          pill.style.borderColor = "var(--line)";
-          if (raw <= 0.10) pill.style.borderColor = "rgba(22,163,74,0.55)";
-          else if (raw <= 0.22) pill.style.borderColor = "rgba(245,158,11,0.55)";
-          else pill.style.borderColor = "rgba(239,68,68,0.55)";
-        }
-      } catch (e) {
+        pill.textContent = `Preço agora: €${raw.toFixed(4)}/kWh (${src})`;
+        pill.title = `Valor bruto: ${raw}`;
+        pill.style.borderColor = "var(--line)";
+      } catch {
         pill.textContent = "Preço agora: —";
         pill.title = "Erro a obter preço";
         pill.style.borderColor = "var(--line)";
@@ -1484,9 +1659,8 @@
     });
 
     function buildPayload() {
-      const nowOverrideLocal = ($("nowOverride").value || "").trim();
-      const nowLocal = nowOverrideLocal ? nowOverrideLocal : nowDtLocal();
-      const now = dtLocalToIsoNoTZ(nowLocal);
+      const nowOverride = $("nowOverride").value.trim();
+      const now = nowOverride ? nowOverride : nowIsoLocalNoTZ();
 
       return {
         now,
@@ -1528,11 +1702,7 @@
       if (!table) return;
 
       table.innerHTML = "";
-
-      const explanations = data.explanations ?? {};
       const nowIso = data.timestamp ?? new Date().toISOString();
-      const now = new Date(nowIso);
-
       const commands = Array.isArray(data.commands) ? data.commands : [];
 
       if (commands.length === 0) {
@@ -1543,52 +1713,16 @@
       }
 
       commands.forEach((cmd) => {
-        const chargerId = cmd.charger_id ?? "—";
-        const vehicleId = cmd.vehicle_id ?? "—";
-        const setKw = toNum(cmd.set_kw, 0);
-        const reason = cmd.reason ?? "";
-
-        const expl = explanations[vehicleId] ?? {};
-        const routeStartIso = expl.route_start_time ?? null;
-        const routeStart = routeStartIso ? new Date(routeStartIso) : null;
-
-        const needKwh = toNum(expl.need_kwh, 0);
-        const kwFinal = toNum(expl.kw_final, setKw);
-
-        let end = null;
-        if (kwFinal > 0 && needKwh > 0) {
-          const hours = needKwh / kwFinal;
-          end = new Date(now.getTime() + hours * 3600 * 1000);
-          if (routeStart && end > routeStart) end = routeStart;
-        } else {
-          end = routeStart;
-        }
-
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${chargerId}</td>
-          <td>${vehicleId}</td>
+          <td>${escapeHtml(cmd.charger_id ?? "—")}</td>
+          <td>${escapeHtml(cmd.vehicle_id ?? "—")}</td>
           <td>${fmtTime(nowIso)}</td>
-          <td>${end ? fmtTime(end.toISOString()) : "—"}</td>
-          <td>${setKw ? setKw.toFixed(1) : "—"}</td>
-          <td>${escapeHtml(reason)}</td>
+          <td>—</td>
+          <td>${(cmd.set_kw != null) ? safeNum(cmd.set_kw, 0).toFixed(1) : "—"}</td>
+          <td style="white-space:normal;">${escapeHtml(cmd.reason ?? "")}</td>
         `;
         table.appendChild(tr);
-      });
-    }
-
-    function showHumanPopupsFromPlan(data) {
-      // mantém como tinhas (não mexi no comportamento)
-      const explanations = data.explanations ?? {};
-      const vehicleIds = Object.keys(explanations);
-
-      if (vehicleIds.length === 0) {
-        toast("🟡 AVISO: Sem explicações recebidas do servidor.", "warn");
-        return;
-      }
-
-      vehicleIds.forEach((vid) => {
-        toast(`Plano atualizado para ${vid}.`, "good");
       });
     }
 
@@ -1600,7 +1734,6 @@
       }
 
       setTab("ops");
-
       const payload = buildPayload();
 
       try {
@@ -1611,30 +1744,26 @@
         });
 
         const data = await res.json();
+        lastPlan = data;
 
         renderScheduleTable(data);
-        showHumanPopupsFromPlan(data);
+        renderResponseTopics(data);
+        renderExplainAccordion(data.explanations ?? {});
 
-        $("output").textContent = JSON.stringify(data, null, 2);
-        $("explain").textContent = JSON.stringify(data.explanations ?? {}, null, 2);
+        updateDashboardKpis();
 
-        updateKpisFromPlan(data);
+        toast(res.ok ? "Plano gerado com sucesso." : "Erro ao gerar plano (ver detalhes).", res.ok ? "good" : "bad");
 
-        if (res.ok) {
-          toast("Plano gerado com sucesso.", "good");
-          if (Array.isArray(data.alerts) && data.alerts.length) {
-            data.alerts.forEach(a => toast(String(a), "warn"));
-          }
-        } else {
-          toast("Erro ao gerar plano (ver output).", "bad");
-        }
+        // abre automaticamente o resumo (resposta completa) quando há alertas
+        const alerts = Array.isArray(data.alerts) ? data.alerts.length : 0;
+        if (alerts > 0) $("accResponse").open = true;
+
       } catch (e) {
-        $("output").textContent = String(e);
         toast("Falha de ligação ao /plan. Verifica CORS e backend.", "bad");
       }
     });
 
-    // -------------------- WebSocket popups --------------------
+    // -------------------- WebSocket --------------------
     function connectWs() {
       if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
         toast("WebSocket já ligado.", "warn");
@@ -1666,14 +1795,12 @@
         toast("WebSocket desligado.", "warn");
       };
 
-      ws.onerror = () => {
-        toast("Erro no WebSocket. Confirma /ws no backend.", "bad");
-      };
+      ws.onerror = () => toast("Erro no WebSocket. Confirma /ws no backend.", "bad");
     }
 
     $("btnWs").addEventListener("click", connectWs);
 
-    // -------------------- Pesquisa (MVP) --------------------
+    // -------------------- Pesquisa --------------------
     function applySearchFilter(qRaw) {
       const q = String(qRaw || "").trim().toLowerCase();
       const tableIds = ["tblChargers", "tblVehicles", "tblPrices", "tblRoutes", "tblSchedule"];
@@ -1683,10 +1810,7 @@
 
         const rows = Array.from(tb.querySelectorAll("tr"));
         rows.forEach(row => {
-          if (!q) {
-            row.classList.remove("hiddenRow");
-            return;
-          }
+          if (!q) { row.classList.remove("hiddenRow"); return; }
           const txt = row.textContent?.toLowerCase?.() ?? "";
           row.classList.toggle("hiddenRow", !txt.includes(q));
         });
@@ -1701,14 +1825,8 @@
       }
     });
 
-    // -------------------- Inicialização --------------------
+    // -------------------- Init --------------------
     loadState();
-
-    // Se o nowOverride vier vazio, põe o seletor com "agora" (opcional)
-    if (!$("nowOverride").value) {
-      $("nowOverride").value = ""; // deixa vazio por defeito
-    }
-
     renderAll();
     saveState();
 
@@ -1719,7 +1837,10 @@
     refreshPrice();
     setInterval(refreshPrice, 30000);
 
-    initKpiSparks();
+    // estado inicial (se ainda não houve plano)
+    renderResponseTopics(null);
+    renderExplainAccordion({});
+    updateDashboardKpis();
   </script>
 </body>
 </html>
