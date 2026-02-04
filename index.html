@@ -1,0 +1,1725 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voltwise — Dashboard</title>
+
+  <style>
+    /* ===== Fleet Overview (card acima das tabelas) ===== */
+    .overviewGrid{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 980px){
+      .overviewGrid{ grid-template-columns: 1fr; }
+    }
+
+    .overviewCard{
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .overviewCard::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(820px 260px at 0% 0%, rgba(37,99,235,0.12), transparent 60%);
+      pointer-events:none;
+    }
+
+    .overviewTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 10px;
+    }
+    .overviewTitle{ font-weight: 950; letter-spacing: -0.2px; margin: 0; }
+    .overviewSubtitle{ margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 700; }
+
+    .overviewStats{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    @media (max-width: 560px){
+      .overviewStats{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .statBox{
+      border: 1px solid rgba(15,23,42,0.08);
+      background: linear-gradient(180deg, rgba(248,250,252,0.9), rgba(255,255,255,0.6));
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .statLabel{ font-size: 12px; color: var(--muted); font-weight: 900; }
+    .statValue{ margin-top: 6px; font-size: 20px; font-weight: 950; letter-spacing: -0.3px; color: #0f172a; }
+
+    :root{
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --muted: #64748b;
+      --text: #0f172a;
+      --line: #e5e7eb;
+
+      --good: #16a34a;
+      --bad: #ef4444;
+      --warn: #f59e0b;
+
+      --btn: #2563eb;
+
+      --shadow: 0 10px 25px rgba(15,23,42,0.08);
+      --shadow2: 0 6px 16px rgba(15,23,42,0.08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body{
+      margin:0;
+      background: linear-gradient(180deg, #f6f9ff 0%, #ffffff 60%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    }
+
+    /* ===== TOPBAR (HEADER) ===== */
+    header.topbar{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(246,249,255,0.75);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbarInner{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 260px;
+    }
+
+    .logo{
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      color: white;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      box-shadow: 0 10px 20px rgba(37,99,235,0.25);
+      user-select: none;
+    }
+
+    .brandText{ display:flex; flex-direction:column; gap: 2px; }
+    .brandRow{ display:flex; align-items:center; gap: 10px; }
+    .brandRow h1{
+      font-size: 20px;
+      font-weight: 900;
+      margin: 0;
+      letter-spacing: -0.4px;
+    }
+
+    .badge{
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(37,99,235,0.20);
+      background: rgba(37,99,235,0.08);
+      color: #1d4ed8;
+      font-weight: 800;
+    }
+
+    .subtitle{
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .topMid{
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 280px;
+      justify-content: center;
+    }
+
+    /* Search */
+    .searchWrap{
+      flex: 1;
+      max-width: 520px;
+      position: relative;
+    }
+
+    .searchWrap input{
+      width: 100%;
+      padding: 10px 12px 10px 38px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.9);
+      outline: none;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.04);
+    }
+
+    .searchWrap input::placeholder{ color:#94a3b8; }
+
+    .searchIcon{
+      position:absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      opacity: .55;
+      color: #334155;
+    }
+
+    /* Segmented Tabs */
+    .segTabs{
+      display:flex;
+      align-items:center;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(15,23,42,0.06);
+      backdrop-filter: blur(10px);
+      white-space: nowrap;
+    }
+
+    .segBtn{
+      appearance:none;
+      border: none;
+      background: transparent;
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .15s ease, box-shadow .15s ease, transform .05s ease, color .15s ease;
+    }
+
+    .segBtn:hover{ background: rgba(37,99,235,0.06); }
+
+    .segBtn.active{
+      background: #ffffff;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.10);
+      border: 1px solid rgba(37,99,235,0.18);
+      color: #1d4ed8;
+    }
+
+    .segBtn:active{ transform: translateY(1px); }
+
+    .topRight{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      min-width: 320px;
+    }
+
+    .pill{
+      padding: 6px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 12px;
+      color: #334155;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 2px 10px rgba(15,23,42,0.04);
+      font-weight: 700;
+    }
+
+    .status{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-size: 12px;
+      color: #475569;
+      font-weight: 700;
+    }
+
+    .status-dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display:inline-block;
+      background: var(--bad);
+      box-shadow: 0 0 0 4px rgba(239,68,68,0.12);
+    }
+
+    button{
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: white;
+      color: #0f172a;
+      font-weight: 700;
+      cursor:pointer;
+      box-shadow: 0 2px 10px rgba(15,23,42,0.03);
+    }
+
+    button.primary{
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: none;
+      color: white;
+      box-shadow: 0 10px 25px rgba(37,99,235,0.20);
+    }
+
+    button:active{ transform: translateY(1px); }
+
+    button.danger{
+      background: #fff1f2;
+      border-color: #fecdd3;
+      color: #9f1239;
+      box-shadow: none;
+    }
+
+    .avatar{
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 12px;
+      color: #0f172a;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+      user-select: none;
+    }
+
+    @media (max-width: 980px){
+      .topbarInner{ justify-content: center; }
+      .topMid{ justify-content: center; }
+      .topRight{ justify-content: center; }
+    }
+
+    @media (max-width: 520px){
+      .segTabs{ width: 100%; justify-content: space-between; }
+      .segBtn{ flex:1; text-align:center; padding: 10px 10px; }
+      .searchWrap{ max-width: 100%; }
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    main{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .viewGrid{
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 980px){
+      .viewGrid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow2);
+    }
+
+    .card h2{
+      font-size: 14px;
+      margin: 0 0 10px;
+      color: #0f172a;
+      font-weight: 900;
+      letter-spacing: -0.1px;
+    }
+
+    .muted{ color: var(--muted); font-size: 12px; font-weight: 600; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    label{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 8px 0 6px;
+      font-weight: 700;
+    }
+
+    input, select{
+      width: 100%;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--text);
+      outline: none;
+      font-weight: 600;
+    }
+
+    input::placeholder{ color: #9aa3af; }
+
+    /* Dá mais espaço para datetime-local (fica mais “editável”) */
+    input[type="datetime-local"]{
+      padding: 9px 10px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    th, td{
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      font-size: 12px;
+      vertical-align: top;
+    }
+
+    th{
+      text-align:left;
+      color: #475569;
+      background: #f8fafc;
+      font-weight: 900;
+    }
+
+    tr:last-child td{ border-bottom: none; }
+    .small{ font-size: 11px; color: var(--muted); font-weight: 700; }
+
+    .toolbar{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 10px;
+    }
+
+    .toolbar .left{ display:flex; gap:10px; align-items:center; }
+    .toolbar .right{ display:flex; gap:10px; align-items:center; }
+
+    /* ===== KPIs (com severidade + look premium) ===== */
+    .kpi{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 860px){
+      .kpi{ grid-template-columns: 1fr; }
+    }
+
+    .kpiCard{
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+      position: relative;
+      overflow: hidden;
+      min-height: 110px;
+    }
+
+    .kpiCard::before{
+      content:"";
+      position:absolute;
+      inset: 0;
+      background: radial-gradient(680px 220px at 0% 0%, rgba(37,99,235,0.10), transparent 60%);
+      pointer-events:none;
+    }
+
+    .kpiTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .kpiLab{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 900;
+      margin-top: 2px;
+    }
+
+    .kpiVal{
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: -0.3px;
+      margin-top: 6px;
+      color: #0f172a;
+    }
+
+    .kpiDelta{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 950;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.9);
+      color: #334155;
+      white-space: nowrap;
+    }
+
+    .kpiDelta.good{ border-color: rgba(22,163,74,0.25); color: #166534; background: rgba(22,163,74,0.08); }
+    .kpiDelta.bad{  border-color: rgba(239,68,68,0.25); color: #991b1b; background: rgba(239,68,68,0.08); }
+    .kpiDelta.neu{  border-color: rgba(148,163,184,0.35); color: #334155; background: rgba(148,163,184,0.10); }
+
+    .spark{
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+      height: 26px;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(15,23,42,0.06);
+      background: linear-gradient(180deg, rgba(248,250,252,0.9), rgba(255,255,255,0.6));
+      overflow: hidden;
+    }
+    .spark svg{ width: 100%; height: 100%; }
+    .spark polyline{ fill: none; stroke: rgba(29,78,216,0.85); stroke-width: 2; }
+    .spark .area{ fill: rgba(37,99,235,0.10); }
+
+    /* Switch (claro) */
+    .switch{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+
+    .switch input{
+      width: 46px;
+      height: 26px;
+      appearance:none;
+      background:#e5e7eb;
+      border:1px solid var(--line);
+      border-radius: 999px;
+      position: relative;
+      cursor:pointer;
+    }
+
+    .switch input:checked{ background: rgba(22,163,74,0.35); border-color: rgba(22,163,74,0.35); }
+
+    .switch input::after{
+      content:"";
+      width: 22px;
+      height: 22px;
+      position:absolute;
+      top: 1px;
+      left: 1px;
+      border-radius: 999px;
+      background:#ffffff;
+      transition: left 0.15s ease;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.10);
+    }
+
+    .switch input:checked::after{ left: 22px; }
+    .switch span{ font-size: 12px; color: #475569; font-weight: 800; }
+
+    /* pre em claro */
+    pre{
+      margin:0;
+      background:#f8fafc;
+      border: 1px solid var(--line);
+      padding: 12px;
+      border-radius: 12px;
+      overflow:auto;
+      max-height: 320px;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    /* Toasts (claros) */
+    #toasts{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      z-index: 9999;
+    }
+
+    .toast{
+      width: 380px;
+      max-width: calc(100vw - 28px);
+      background: rgba(255,255,255,0.95);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 18px 40px rgba(15,23,42,0.18);
+    }
+
+    .toast .t{ font-size: 12px; color: var(--muted); font-weight: 900; }
+    .toast .m{ margin-top: 6px; font-size: 13px; color: #0f172a; font-weight: 700; }
+
+    .toast.good{ border-color: rgba(22,163,74,0.28); }
+    .toast.warn{ border-color: rgba(245,158,11,0.28); }
+    .toast.bad{  border-color: rgba(239,68,68,0.28); }
+
+    /* util */
+    .hiddenRow { display: none !important; }
+  </style>
+</head>
+
+<body>
+  <!-- ===== HEADER ===== -->
+  <header class="topbar">
+    <div class="topbarInner">
+      <div class="brand">
+        <div class="logo">V</div>
+        <div class="brandText">
+          <div class="brandRow">
+            <h1>Voltwise</h1>
+            <span class="badge">Dashboard</span>
+          </div>
+          <div class="subtitle">Plataforma inteligente para frotas elétricas</div>
+        </div>
+      </div>
+
+      <div class="topMid">
+        <div class="searchWrap">
+          <svg class="searchIcon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M10.5 18.5a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2" opacity="0.7"/>
+            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          </svg>
+          <input id="searchInput" placeholder="Pesquisar (veículo, carregador, rota)…" />
+        </div>
+
+        <div class="segTabs" aria-label="Navegação">
+          <button id="tabConfig" class="segBtn active" type="button">Configuração</button>
+          <button id="tabOps" class="segBtn" type="button">Operação</button>
+        </div>
+      </div>
+
+      <div class="topRight">
+        <div class="status">
+          <span id="apiDot" class="status-dot"></span>
+          <span id="apiStatus">API: a verificar…</span>
+        </div>
+
+        <div class="pill" id="pricePill" title="Preço atual do mercado">Preço agora: —</div>
+
+        <button id="btnPing" type="button">Testar API</button>
+        <button id="btnGenerate" class="primary" type="button">Gerar Plano</button>
+
+        <div class="avatar" title="Admin">VW</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+    <!-- TAB: CONFIGURAÇÃO -->
+    <div id="viewConfig" style="display:block;">
+      <div class="viewGrid">
+        <section class="card">
+          <h2>Configuração</h2>
+
+          <div class="grid">
+            <div>
+              <label>Potência máxima do edifício (kW)</label>
+              <input id="siteMaxKw" type="number" value="60" step="1" />
+            </div>
+            <div>
+              <label>Data/hora “agora” (opcional)</label>
+              <!-- ✅ AGORA É UM SELETOR FÁCIL -->
+              <input id="nowOverride" type="datetime-local" />
+              <div class="small" style="margin-top:6px;">
+                Dica: deixa vazio para usar a hora atual.
+              </div>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="left">
+              <h2 style="margin:0;">Carregadores</h2>
+              <span class="small">Adicionar/Remover</span>
+            </div>
+            <div class="right">
+              <button id="btnAddCharger" type="button">+ Adicionar carregador</button>
+            </div>
+          </div>
+
+          <table id="tblChargers">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Max kW</th>
+                <th>Ativo</th>
+                <th>Eficiência</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <div class="toolbar">
+            <div class="left">
+              <h2 style="margin:0;">Veículos</h2>
+              <span class="small">Adicionar/Remover</span>
+            </div>
+            <div class="right">
+              <button id="btnAddVehicle" type="button">+ Adicionar veículo</button>
+            </div>
+          </div>
+
+          <table id="tblVehicles">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Bateria (kWh)</th>
+                <th>SoC</th>
+                <th>SoH</th>
+                <th>Temp</th>
+                <th>Estado</th>
+                <th>Carregador</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <div class="toolbar">
+            <div class="left">
+              <h2 style="margin:0;">Preço da energia</h2>
+              <span class="small">Tabela simples (por hora)</span>
+            </div>
+            <div class="right">
+              <button id="btnAddPrice" type="button">+ Adicionar preço</button>
+            </div>
+          </div>
+
+          <table id="tblPrices">
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>€/kWh</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+
+        <section class="card">
+          <h2>Estado do Sistema</h2>
+          <div class="muted">Liga o WebSocket para pop-ups em tempo real.</div>
+
+          <div class="toolbar" style="margin-top:12px;">
+            <div class="left">
+              <span class="muted">Ligação</span>
+            </div>
+            <div class="right">
+              <button id="btnWs" type="button">Ligar pop-ups</button>
+            </div>
+          </div>
+
+          <label style="margin-top:12px;">Últimos pop-ups</label>
+          <pre id="popupLog">[]</pre>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB: OPERAÇÃO -->
+    <div id="viewOps" style="display:none;">
+      <!-- ===== FLEET OVERVIEW (NOVO) ===== -->
+      <div class="overviewGrid">
+        <section class="overviewCard">
+          <div class="overviewTop">
+            <div>
+              <div class="overviewTitle">Fleet Overview</div>
+              <div class="overviewSubtitle">Ativos / a carregar / em rota / críticos (resumo rápido).</div>
+            </div>
+            <div class="pill" id="ovHealthPill" title="Estado geral">Estado: —</div>
+          </div>
+
+          <div class="overviewStats">
+            <div class="statBox">
+              <div class="statLabel">Ativos</div>
+              <div class="statValue" id="ovActive">—</div>
+            </div>
+            <div class="statBox">
+              <div class="statLabel">A carregar</div>
+              <div class="statValue" id="ovCharging">—</div>
+            </div>
+            <div class="statBox">
+              <div class="statLabel">Em rota</div>
+              <div class="statValue" id="ovOnRoute">—</div>
+            </div>
+            <div class="statBox">
+              <div class="statLabel">Críticos</div>
+              <div class="statValue" id="ovCritical">—</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="overviewCard">
+          <div class="overviewTop">
+            <div>
+              <div class="overviewTitle">Saúde do Plano</div>
+              <div class="overviewSubtitle">Alertas + potência vs limite do edifício.</div>
+            </div>
+          </div>
+
+          <div class="overviewStats" style="grid-template-columns: 1fr 1fr;">
+            <div class="statBox">
+              <div class="statLabel">Alertas totais</div>
+              <div class="statValue" id="ovAlerts">—</div>
+            </div>
+            <div class="statBox">
+              <div class="statLabel">Potência / limite</div>
+              <div class="statValue" id="ovPower">—</div>
+            </div>
+          </div>
+
+          <div class="toolbar" style="margin-top:12px;">
+            <div class="left">
+              <span class="muted" id="ovHint">Gera um plano para atualizar indicadores.</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="viewGrid">
+        <section class="card">
+          <h2>Operação</h2>
+
+          <div class="toolbar">
+            <div class="left">
+              <h2 style="margin:0;">Rotas</h2>
+            </div>
+            <div class="right">
+              <button id="btnAddRoute" type="button">+ Adicionar rota</button>
+            </div>
+          </div>
+
+          <table id="tblRoutes">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Veículo</th>
+                <th>Início</th>
+                <th>Fim</th>
+                <th>ETA (min)</th>
+                <th>Consumo (kWh)</th>
+                <th>SoC min</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <div class="toolbar" style="margin-top:14px;">
+            <div class="left muted" id="hint">Gera o plano para atualizar comandos e horários.</div>
+            <div class="right"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Resultados</h2>
+
+          <!-- ===== KPIs NOVOS ===== -->
+          <div class="kpi">
+            <div class="kpiCard" id="kpiCardKw">
+              <div class="kpiTop">
+                <div>
+                  <div class="kpiLab">Potência total</div>
+                  <div class="kpiVal" id="kpiKw">—</div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                  <div class="kpiDelta neu" id="deltaKw">—</div>
+                </div>
+              </div>
+              <div class="spark" aria-hidden="true">
+                <svg viewBox="0 0 100 26" preserveAspectRatio="none">
+                  <polygon class="area" id="areaKw" points=""></polygon>
+                  <polyline id="sparkKw" points=""></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <div class="kpiCard" id="kpiCardCmds">
+              <div class="kpiTop">
+                <div>
+                  <div class="kpiLab">Comandos</div>
+                  <div class="kpiVal" id="kpiCmds">—</div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                  <div class="kpiDelta neu" id="deltaCmds">—</div>
+                </div>
+              </div>
+              <div class="spark" aria-hidden="true">
+                <svg viewBox="0 0 100 26" preserveAspectRatio="none">
+                  <polygon class="area" id="areaCmds" points=""></polygon>
+                  <polyline id="sparkCmds" points=""></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <div class="kpiCard" id="kpiCardAlerts">
+              <div class="kpiTop">
+                <div>
+                  <div class="kpiLab">Alertas</div>
+                  <div class="kpiVal" id="kpiAlerts">—</div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                  <div class="kpiDelta neu" id="deltaAlerts">—</div>
+                </div>
+              </div>
+              <div class="spark" aria-hidden="true">
+                <svg viewBox="0 0 100 26" preserveAspectRatio="none">
+                  <polygon class="area" id="areaAlerts" points=""></polygon>
+                  <polyline id="sparkAlerts" points=""></polyline>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <label style="margin-top:12px;">Plano de Carregamento (por carregador)</label>
+          <table id="tblSchedule">
+            <thead>
+              <tr>
+                <th>Carregador</th>
+                <th>Veículo</th>
+                <th>Início</th>
+                <th>Fim (estimado)</th>
+                <th>kW</th>
+                <th>Motivo</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <label style="margin-top:12px;">Resposta completa</label>
+          <pre id="output">{}</pre>
+
+          <label style="margin-top:12px;">Explicações (por veículo)</label>
+          <pre id="explain">{}</pre>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="toasts"></div>
+
+  <script>
+    const API_BASE = window.location.origin;
+    const WS_URL = (window.location.protocol === "https:" ? "wss://" : "ws://") + window.location.host + "/ws";
+
+    // -------------------- State --------------------
+    let chargers = [
+      { id: "C1", max_kw: 22, enabled: true, efficiency: 0.92 }
+    ];
+
+    let vehicles = [
+      { id: "V1", battery_kwh: 75, soc: 0.30, soh: 0.95, temp_c: 28, state: "DISPONIVEL", charger_id: "C1" }
+    ];
+
+    let routes = [
+      { id: "R1", vehicle_id: "V1", start_time: "2026-01-23T19:00:00", end_time: "2026-01-23T20:30:00", eta_minutes: 90, consumption_kwh: 22, required_soc_min: 0.60, distance_km: 95 }
+    ];
+
+    let prices = [
+      { ts: "2026-01-23T17:00:00", eur_per_kwh: 0.18 },
+      { ts: "2026-01-23T18:00:00", eur_per_kwh: 0.24 },
+      { ts: "2026-01-23T19:00:00", eur_per_kwh: 0.32 }
+    ];
+
+    let ws = null;
+    let popupHistory = [];
+
+    // -------------------- Helpers --------------------
+    const $ = (id) => document.getElementById(id);
+
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;");
+    }
+
+    function toast(msg, kind="good") {
+      const host = $("toasts");
+      const el = document.createElement("div");
+      el.className = `toast ${kind}`;
+      el.innerHTML = `<div class="t">${new Date().toLocaleTimeString()}</div><div class="m">${escapeHtml(msg)}</div>`;
+      host.appendChild(el);
+      setTimeout(() => { el.style.opacity = "0"; el.style.transition = "opacity .25s"; }, 4200);
+      setTimeout(() => host.removeChild(el), 4600);
+    }
+
+    function setApiStatus(ok, text) {
+      $("apiDot").style.background = ok ? "var(--good)" : "var(--bad)";
+      $("apiDot").style.boxShadow = ok
+        ? "0 0 0 4px rgba(22,163,74,0.12)"
+        : "0 0 0 4px rgba(239,68,68,0.12)";
+      $("apiStatus").textContent = text;
+    }
+
+    function fmtTime(iso) {
+      try {
+        const d = new Date(iso);
+        return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      } catch {
+        return "—";
+      }
+    }
+
+    function toNum(x, fallback = 0) {
+      const n = Number(x);
+      return Number.isFinite(n) ? n : fallback;
+    }
+
+    // -------------------- DATETIME (NOVO: fácil de preencher) --------------------
+    // O input datetime-local devolve "YYYY-MM-DDTHH:MM" (sem segundos).
+    // O backend costuma gostar de "YYYY-MM-DDTHH:MM:SS".
+    function dtLocalToIsoNoTZ(dtLocal) {
+      const s = String(dtLocal || "").trim();
+      if (!s) return "";
+      // já vem com "T"
+      return s.length === 16 ? (s + ":00") : s; // adiciona segundos
+    }
+
+    // Converte "YYYY-MM-DDTHH:MM:SS" -> "YYYY-MM-DDTHH:MM" para preencher o input
+    function isoNoTZToDtLocal(isoNoTZ) {
+      const s = String(isoNoTZ || "").trim();
+      if (!s) return "";
+      // corta segundos (se existirem)
+      return s.slice(0, 16);
+    }
+
+    // Hora "agora" local em formato para input datetime-local
+    function nowDtLocal() {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const yyyy = d.getFullYear();
+      const mm = pad(d.getMonth() + 1);
+      const dd = pad(d.getDate());
+      const hh = pad(d.getHours());
+      const mi = pad(d.getMinutes());
+      return `${yyyy}-${mm}-${dd}T${hh}:${mi}`;
+    }
+
+    // -------------------- KPI utils --------------------
+    const KPI_STORE_KEY = "vw_kpi_history_v1";
+
+    function loadKpiHistory() {
+      const raw = localStorage.getItem(KPI_STORE_KEY);
+      if (!raw) return { kw: [], cmds: [], alerts: [], last: null };
+      try {
+        const x = JSON.parse(raw);
+        return {
+          kw: Array.isArray(x.kw) ? x.kw : [],
+          cmds: Array.isArray(x.cmds) ? x.cmds : [],
+          alerts: Array.isArray(x.alerts) ? x.alerts : [],
+          last: x.last ?? null
+        };
+      } catch {
+        return { kw: [], cmds: [], alerts: [], last: null };
+      }
+    }
+
+    function saveKpiHistory(h) {
+      localStorage.setItem(KPI_STORE_KEY, JSON.stringify(h));
+    }
+
+    function clampHistory(arr, maxN=18) {
+      return Array.isArray(arr) ? arr.slice(-maxN) : [];
+    }
+
+    function setDelta(elId, delta) {
+      const el = $(elId);
+      if (!el) return;
+
+      if (delta === null || !Number.isFinite(delta)) {
+        el.textContent = "—";
+        el.className = "kpiDelta neu";
+        return;
+      }
+
+      const sign = delta > 0 ? "+" : (delta < 0 ? "−" : "±");
+      const abs = Math.abs(delta);
+      el.textContent = `${sign}${abs}`;
+      if (delta > 0) el.className = "kpiDelta good";
+      else if (delta < 0) el.className = "kpiDelta bad";
+      else el.className = "kpiDelta neu";
+    }
+
+    function makeSparkPoints(values) {
+      const vals = (values || []).map(Number).filter(v => Number.isFinite(v));
+      if (vals.length === 0) return { line:"", area:"" };
+      const minV = Math.min(...vals);
+      const maxV = Math.max(...vals);
+      const span = (maxV - minV) || 1;
+
+      const W = 100, H = 26;
+      const padY = 3;
+
+      const pts = vals.map((v, i) => {
+        const x = (vals.length === 1) ? 50 : (i * (W / (vals.length - 1)));
+        const y = (H - padY) - ((v - minV) / span) * (H - padY*2);
+        return [x.toFixed(2), y.toFixed(2)];
+      });
+
+      const line = pts.map(p => p.join(",")).join(" ");
+      const area = `0,${H} ` + pts.map(p => p.join(",")).join(" ") + ` ${W},${H}`;
+      return { line, area };
+    }
+
+    function renderSpark(lineId, areaId, values) {
+      const l = $(lineId);
+      const a = $(areaId);
+      if (!l || !a) return;
+      const pts = makeSparkPoints(values);
+      l.setAttribute("points", pts.line);
+      a.setAttribute("points", pts.area);
+    }
+
+    function updateKpisFromPlan(data) {
+      const kw = Number(data.total_kw ?? 0);
+      const cmds = Number((data.commands && data.commands.length) ? data.commands.length : 0);
+      const alerts = Number((data.alerts && data.alerts.length) ? data.alerts.length : 0);
+
+      $("kpiKw").textContent = Number.isFinite(kw) ? kw.toFixed(1) : "—";
+      $("kpiCmds").textContent = Number.isFinite(cmds) ? String(cmds) : "—";
+      $("kpiAlerts").textContent = Number.isFinite(alerts) ? String(alerts) : "—";
+
+      const hist = loadKpiHistory();
+      const last = hist.last;
+
+      setDelta("deltaKw", last ? (kw - Number(last.kw ?? 0)) : null);
+      setDelta("deltaCmds", last ? (cmds - Number(last.cmds ?? 0)) : null);
+      setDelta("deltaAlerts", last ? (alerts - Number(last.alerts ?? 0)) : null);
+
+      hist.kw = clampHistory(hist.kw.concat([kw]));
+      hist.cmds = clampHistory(hist.cmds.concat([cmds]));
+      hist.alerts = clampHistory(hist.alerts.concat([alerts]));
+      hist.last = { kw, cmds, alerts, ts: new Date().toISOString() };
+      saveKpiHistory(hist);
+
+      renderSpark("sparkKw", "areaKw", hist.kw);
+      renderSpark("sparkCmds", "areaCmds", hist.cmds);
+      renderSpark("sparkAlerts", "areaAlerts", hist.alerts);
+    }
+
+    function initKpiSparks() {
+      const hist = loadKpiHistory();
+      renderSpark("sparkKw", "areaKw", clampHistory(hist.kw));
+      renderSpark("sparkCmds", "areaCmds", clampHistory(hist.cmds));
+      renderSpark("sparkAlerts", "areaAlerts", clampHistory(hist.alerts));
+
+      setDelta("deltaKw", null);
+      setDelta("deltaCmds", null);
+      setDelta("deltaAlerts", null);
+    }
+
+    // -------------------- Tabs --------------------
+    function setTab(name) {
+      const isConfig = name === "config";
+      $("viewConfig").style.display = isConfig ? "block" : "none";
+      $("viewOps").style.display = isConfig ? "none" : "block";
+
+      $("tabConfig").classList.toggle("active", isConfig);
+      $("tabOps").classList.toggle("active", !isConfig);
+
+      localStorage.setItem("fleet_ai_tab", isConfig ? "config" : "ops");
+    }
+
+    $("tabConfig").addEventListener("click", () => setTab("config"));
+    $("tabOps").addEventListener("click", () => setTab("ops"));
+
+    // -------------------- Render tables --------------------
+    function renderChargers() {
+      const tb = $("tblChargers").querySelector("tbody");
+      tb.innerHTML = "";
+      chargers.forEach((c, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><input value="${c.id}" data-k="id" data-i="${idx}" /></td>
+          <td><input type="number" step="1" value="${c.max_kw}" data-k="max_kw" data-i="${idx}" /></td>
+          <td>
+            <div class="switch">
+              <input type="checkbox" ${c.enabled ? "checked":""} data-k="enabled" data-i="${idx}" />
+              <span>${c.enabled ? "Sim" : "Não"}</span>
+            </div>
+          </td>
+          <td><input type="number" step="0.01" min="0" max="1" value="${c.efficiency}" data-k="efficiency" data-i="${idx}" /></td>
+          <td><button class="danger" data-del="charger" data-i="${idx}" type="button">Remover</button></td>
+        `;
+        tb.appendChild(tr);
+      });
+    }
+
+    function renderVehicles() {
+      const tb = $("tblVehicles").querySelector("tbody");
+      tb.innerHTML = "";
+      vehicles.forEach((v, idx) => {
+        const chargerOptions = [`<option value="">(nenhum)</option>`]
+          .concat(chargers.map(c => `<option value="${c.id}" ${v.charger_id===c.id ? "selected":""}>${c.id}</option>`))
+          .join("");
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><input value="${v.id}" data-k="id" data-i="${idx}" /></td>
+          <td><input type="number" step="1" value="${v.battery_kwh}" data-k="battery_kwh" data-i="${idx}" /></td>
+          <td><input type="number" step="0.01" min="0" max="1" value="${v.soc}" data-k="soc" data-i="${idx}" /></td>
+          <td><input type="number" step="0.01" min="0" max="1" value="${v.soh}" data-k="soh" data-i="${idx}" /></td>
+          <td><input type="number" step="1" value="${v.temp_c}" data-k="temp_c" data-i="${idx}" /></td>
+          <td>
+            <select data-k="state" data-i="${idx}">
+              <option value="DISPONIVEL" ${v.state==="DISPONIVEL"?"selected":""}>DISPONIVEL</option>
+              <option value="EM_ROTA" ${v.state==="EM_ROTA"?"selected":""}>EM_ROTA</option>
+              <option value="MANUTENCAO" ${v.state==="MANUTENCAO"?"selected":""}>MANUTENCAO</option>
+            </select>
+          </td>
+          <td>
+            <select data-k="charger_id" data-i="${idx}">${chargerOptions}</select>
+          </td>
+          <td><button class="danger" data-del="vehicle" data-i="${idx}" type="button">Remover</button></td>
+        `;
+        tb.appendChild(tr);
+      });
+    }
+
+    function renderRoutes() {
+      const tb = $("tblRoutes").querySelector("tbody");
+      tb.innerHTML = "";
+      routes.forEach((r, idx) => {
+        const vehicleOptions = vehicles.map(v => `<option value="${v.id}" ${r.vehicle_id===v.id?"selected":""}>${v.id}</option>`).join("");
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><input value="${r.id}" data-k="id" data-i="${idx}" /></td>
+          <td><select data-k="vehicle_id" data-i="${idx}">${vehicleOptions}</select></td>
+
+          <!-- ✅ MAIS FÁCIL: datetime-local -->
+          <td><input type="datetime-local" value="${isoNoTZToDtLocal(r.start_time)}" data-k="start_time" data-i="${idx}" /></td>
+          <td><input type="datetime-local" value="${isoNoTZToDtLocal(r.end_time)}" data-k="end_time" data-i="${idx}" /></td>
+
+          <td><input type="number" step="1" value="${r.eta_minutes}" data-k="eta_minutes" data-i="${idx}" /></td>
+          <td><input type="number" step="0.1" value="${r.consumption_kwh}" data-k="consumption_kwh" data-i="${idx}" /></td>
+          <td><input type="number" step="0.01" min="0" max="1" value="${r.required_soc_min}" data-k="required_soc_min" data-i="${idx}" /></td>
+          <td><button class="danger" data-del="route" data-i="${idx}" type="button">Remover</button></td>
+        `;
+        tb.appendChild(tr);
+      });
+    }
+
+    function renderPrices() {
+      const tb = $("tblPrices").querySelector("tbody");
+      tb.innerHTML = "";
+      prices.forEach((p, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <!-- ✅ MAIS FÁCIL: datetime-local -->
+          <td><input type="datetime-local" value="${isoNoTZToDtLocal(p.ts)}" data-k="ts" data-i="${idx}" /></td>
+
+          <td><input type="number" step="0.001" value="${p.eur_per_kwh}" data-k="eur_per_kwh" data-i="${idx}" /></td>
+          <td><button class="danger" data-del="price" data-i="${idx}" type="button">Remover</button></td>
+        `;
+        tb.appendChild(tr);
+      });
+    }
+
+    function renderAll() {
+      renderChargers();
+      renderVehicles();
+      renderRoutes();
+      renderPrices();
+    }
+
+    // -------------------- Persistência (LocalStorage) --------------------
+    const STORAGE_KEY = "fleet_ai_state_v1";
+
+    function saveState() {
+      const state = {
+        chargers,
+        vehicles,
+        routes,
+        prices,
+        siteMaxKw: $("siteMaxKw")?.value ?? 60,
+        nowOverride: $("nowOverride")?.value ?? ""
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      try {
+        const s = JSON.parse(raw);
+        chargers = s.chargers ?? chargers;
+        vehicles = s.vehicles ?? vehicles;
+        routes = s.routes ?? routes;
+        prices = s.prices ?? prices;
+        if (s.siteMaxKw != null) $("siteMaxKw").value = s.siteMaxKw;
+
+        // agoraOverride é datetime-local -> guardamos e repomos direto
+        if (s.nowOverride != null) $("nowOverride").value = s.nowOverride;
+
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    // -------------------- Table interactions --------------------
+    document.addEventListener("input", (e) => {
+      const t = e.target;
+      const k = t.getAttribute("data-k");
+      const i = t.getAttribute("data-i");
+
+      if (k === null || i === null) {
+        if (t.id === "siteMaxKw" || t.id === "nowOverride") saveState();
+        return;
+      }
+
+      const tr = t.closest("tr");
+      const table = t.closest("table")?.id;
+      const idx = Number(i);
+
+      function setObj(arr, idx, key, value) {
+        if (!arr[idx]) return;
+        arr[idx][key] = value;
+      }
+
+      let val;
+      if (t.type === "checkbox") val = t.checked;
+      else if (t.type === "number") val = Number(t.value);
+      else val = t.value;
+
+      // ✅ converter datetime-local para iso sem TZ (com segundos)
+      if (t.type === "datetime-local") {
+        val = dtLocalToIsoNoTZ(val);
+      }
+
+      if (table === "tblChargers") setObj(chargers, idx, k, val);
+      if (table === "tblVehicles") setObj(vehicles, idx, k, val);
+      if (table === "tblRoutes")   setObj(routes, idx, k, val);
+      if (table === "tblPrices")   setObj(prices, idx, k, val);
+
+      if (t.type === "checkbox") {
+        const label = tr.querySelector(".switch span");
+        if (label) label.textContent = t.checked ? "Sim" : "Não";
+      }
+
+      if (table === "tblChargers" || table === "tblVehicles") {
+        renderVehicles();
+        renderRoutes();
+      }
+
+      saveState();
+      applySearchFilter(($("searchInput")?.value ?? "").trim());
+    });
+
+    document.addEventListener("click", (e) => {
+      const t = e.target;
+      if (!(t instanceof HTMLElement)) return;
+
+      const del = t.getAttribute("data-del");
+      const i = t.getAttribute("data-i");
+      if (del && i !== null) {
+        const idx = Number(i);
+        if (del === "charger") chargers.splice(idx, 1);
+        if (del === "vehicle") vehicles.splice(idx, 1);
+        if (del === "route") routes.splice(idx, 1);
+        if (del === "price") prices.splice(idx, 1);
+        renderAll();
+        saveState();
+        applySearchFilter(($("searchInput")?.value ?? "").trim());
+        return;
+      }
+    });
+
+    // Add buttons
+    $("btnAddCharger").addEventListener("click", () => {
+      const n = chargers.length + 1;
+      chargers.push({ id: `C${n}`, max_kw: 11, enabled: true, efficiency: 0.90 });
+      renderAll();
+      saveState();
+      applySearchFilter(($("searchInput")?.value ?? "").trim());
+      toast("Carregador adicionado.", "good");
+    });
+
+    $("btnAddVehicle").addEventListener("click", () => {
+      const n = vehicles.length + 1;
+      vehicles.push({ id: `V${n}`, battery_kwh: 60, soc: 0.40, soh: 0.93, temp_c: 28, state: "DISPONIVEL", charger_id: chargers[0]?.id || "" });
+      renderAll();
+      saveState();
+      applySearchFilter(($("searchInput")?.value ?? "").trim());
+      toast("Veículo adicionado.", "good");
+    });
+
+    $("btnAddRoute").addEventListener("click", () => {
+      const n = routes.length + 1;
+      const v = vehicles[0]?.id || `V1`;
+      const start = dtLocalToIsoNoTZ(nowDtLocal());
+      // fim default: +1h
+      const d = new Date();
+      d.setHours(d.getHours() + 1);
+      const pad = (x)=>String(x).padStart(2,"0");
+      const endLocal = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      const end = dtLocalToIsoNoTZ(endLocal);
+
+      routes.push({
+        id: `R${n}`,
+        vehicle_id: v,
+        start_time: start,
+        end_time: end,
+        eta_minutes: 60,
+        consumption_kwh: 15,
+        required_soc_min: 0.55,
+        distance_km: 70
+      });
+      renderAll();
+      saveState();
+      applySearchFilter(($("searchInput")?.value ?? "").trim());
+      toast("Rota adicionada.", "good");
+    });
+
+    $("btnAddPrice").addEventListener("click", () => {
+      prices.push({ ts: dtLocalToIsoNoTZ(nowDtLocal()), eur_per_kwh: 0.20 });
+      renderAll();
+      saveState();
+      applySearchFilter(($("searchInput")?.value ?? "").trim());
+      toast("Preço adicionado.", "good");
+    });
+
+    // -------------------- API calls --------------------
+    async function pingApi() {
+      try {
+        const r = await fetch(`${API_BASE}/health`, { method: "GET" });
+        setApiStatus(r.ok, r.ok ? "API: online" : "API: erro");
+        return r.ok;
+      } catch {
+        setApiStatus(false, "API: offline");
+        return false;
+      }
+    }
+
+    async function refreshPrice() {
+      const pill = $("pricePill");
+      if (!pill) return;
+
+      try {
+        const r = await fetch(`${API_BASE}/price/current`, { method: "GET" });
+        const data = await r.json();
+
+        if (!data.ok || data.eur_per_kwh == null) {
+          pill.textContent = "Preço agora: —";
+          pill.title = data.error || "Sem preço disponível";
+          pill.style.borderColor = "var(--line)";
+          return;
+        }
+
+        const raw = Number(data.eur_per_kwh);
+        const src = data.source || "?";
+        const absShown = Math.abs(raw);
+
+        if (raw < 0) {
+          pill.textContent = `Preço agora: -€${absShown.toFixed(4)}/kWh (${src})`;
+          pill.title = `Preço spot negativo. Valor bruto: ${raw}`;
+          pill.style.borderColor = "rgba(22,163,74,0.55)";
+        } else {
+          pill.textContent = `Preço agora: €${raw.toFixed(4)}/kWh (${src})`;
+          pill.title = `Valor bruto: ${raw}`;
+
+          pill.style.borderColor = "var(--line)";
+          if (raw <= 0.10) pill.style.borderColor = "rgba(22,163,74,0.55)";
+          else if (raw <= 0.22) pill.style.borderColor = "rgba(245,158,11,0.55)";
+          else pill.style.borderColor = "rgba(239,68,68,0.55)";
+        }
+      } catch (e) {
+        pill.textContent = "Preço agora: —";
+        pill.title = "Erro a obter preço";
+        pill.style.borderColor = "var(--line)";
+      }
+    }
+
+    $("btnPing").addEventListener("click", async () => {
+      const ok = await pingApi();
+      toast(ok ? "API está online." : "Não consegui ligar à API.", ok ? "good" : "bad");
+    });
+
+    function buildPayload() {
+      const nowOverrideLocal = ($("nowOverride").value || "").trim();
+      const nowLocal = nowOverrideLocal ? nowOverrideLocal : nowDtLocal();
+      const now = dtLocalToIsoNoTZ(nowLocal);
+
+      return {
+        now,
+        site_max_kw: Number($("siteMaxKw").value),
+        vehicles: vehicles.map(v => ({
+          id: v.id,
+          battery_kwh: Number(v.battery_kwh),
+          soc: Number(v.soc),
+          soh: Number(v.soh),
+          temp_c: Number(v.temp_c),
+          state: v.state,
+          charger_id: v.charger_id ? String(v.charger_id) : null
+        })),
+        chargers: chargers.map(c => ({
+          id: c.id,
+          max_kw: Number(c.max_kw),
+          enabled: Boolean(c.enabled),
+          efficiency: Number(c.efficiency)
+        })),
+        routes: routes.map(r => ({
+          id: r.id,
+          vehicle_id: r.vehicle_id,
+          start_time: r.start_time,
+          end_time: r.end_time,
+          distance_km: Number(r.distance_km ?? 0),
+          eta_minutes: Number(r.eta_minutes),
+          consumption_kwh: Number(r.consumption_kwh),
+          required_soc_min: Number(r.required_soc_min)
+        })),
+        prices: prices.map(p => ({
+          ts: p.ts,
+          eur_per_kwh: Number(p.eur_per_kwh)
+        }))
+      };
+    }
+
+    function renderScheduleTable(data) {
+      const table = document.querySelector("#tblSchedule tbody");
+      if (!table) return;
+
+      table.innerHTML = "";
+
+      const explanations = data.explanations ?? {};
+      const nowIso = data.timestamp ?? new Date().toISOString();
+      const now = new Date(nowIso);
+
+      const commands = Array.isArray(data.commands) ? data.commands : [];
+
+      if (commands.length === 0) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="6" class="small">Sem carregamentos planeados neste momento.</td>`;
+        table.appendChild(tr);
+        return;
+      }
+
+      commands.forEach((cmd) => {
+        const chargerId = cmd.charger_id ?? "—";
+        const vehicleId = cmd.vehicle_id ?? "—";
+        const setKw = toNum(cmd.set_kw, 0);
+        const reason = cmd.reason ?? "";
+
+        const expl = explanations[vehicleId] ?? {};
+        const routeStartIso = expl.route_start_time ?? null;
+        const routeStart = routeStartIso ? new Date(routeStartIso) : null;
+
+        const needKwh = toNum(expl.need_kwh, 0);
+        const kwFinal = toNum(expl.kw_final, setKw);
+
+        let end = null;
+        if (kwFinal > 0 && needKwh > 0) {
+          const hours = needKwh / kwFinal;
+          end = new Date(now.getTime() + hours * 3600 * 1000);
+          if (routeStart && end > routeStart) end = routeStart;
+        } else {
+          end = routeStart;
+        }
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${chargerId}</td>
+          <td>${vehicleId}</td>
+          <td>${fmtTime(nowIso)}</td>
+          <td>${end ? fmtTime(end.toISOString()) : "—"}</td>
+          <td>${setKw ? setKw.toFixed(1) : "—"}</td>
+          <td>${escapeHtml(reason)}</td>
+        `;
+        table.appendChild(tr);
+      });
+    }
+
+    function showHumanPopupsFromPlan(data) {
+      // mantém como tinhas (não mexi no comportamento)
+      const explanations = data.explanations ?? {};
+      const vehicleIds = Object.keys(explanations);
+
+      if (vehicleIds.length === 0) {
+        toast("🟡 AVISO: Sem explicações recebidas do servidor.", "warn");
+        return;
+      }
+
+      vehicleIds.forEach((vid) => {
+        toast(`Plano atualizado para ${vid}.`, "good");
+      });
+    }
+
+    $("btnGenerate").addEventListener("click", async () => {
+      const ok = await pingApi();
+      if (!ok) {
+        toast("API offline. Liga o backend (uvicorn).", "bad");
+        return;
+      }
+
+      setTab("ops");
+
+      const payload = buildPayload();
+
+      try {
+        const res = await fetch(`${API_BASE}/plan`, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        renderScheduleTable(data);
+        showHumanPopupsFromPlan(data);
+
+        $("output").textContent = JSON.stringify(data, null, 2);
+        $("explain").textContent = JSON.stringify(data.explanations ?? {}, null, 2);
+
+        updateKpisFromPlan(data);
+
+        if (res.ok) {
+          toast("Plano gerado com sucesso.", "good");
+          if (Array.isArray(data.alerts) && data.alerts.length) {
+            data.alerts.forEach(a => toast(String(a), "warn"));
+          }
+        } else {
+          toast("Erro ao gerar plano (ver output).", "bad");
+        }
+      } catch (e) {
+        $("output").textContent = String(e);
+        toast("Falha de ligação ao /plan. Verifica CORS e backend.", "bad");
+      }
+    });
+
+    // -------------------- WebSocket popups --------------------
+    function connectWs() {
+      if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+        toast("WebSocket já ligado.", "warn");
+        return;
+      }
+
+      ws = new WebSocket(WS_URL);
+
+      ws.onopen = () => {
+        toast("Pop-ups ligados (WebSocket).", "good");
+        ws._ping = setInterval(() => {
+          try { ws.send("ping"); } catch {}
+        }, 8000);
+      };
+
+      ws.onmessage = (ev) => {
+        try {
+          const msg = JSON.parse(ev.data);
+          if (msg.type === "popups" && Array.isArray(msg.items)) {
+            msg.items.forEach(it => toast(String(it), "warn"));
+            popupHistory = popupHistory.concat(msg.items).slice(-20);
+            $("popupLog").textContent = JSON.stringify(popupHistory, null, 2);
+          }
+        } catch {}
+      };
+
+      ws.onclose = () => {
+        if (ws?._ping) clearInterval(ws._ping);
+        toast("WebSocket desligado.", "warn");
+      };
+
+      ws.onerror = () => {
+        toast("Erro no WebSocket. Confirma /ws no backend.", "bad");
+      };
+    }
+
+    $("btnWs").addEventListener("click", connectWs);
+
+    // -------------------- Pesquisa (MVP) --------------------
+    function applySearchFilter(qRaw) {
+      const q = String(qRaw || "").trim().toLowerCase();
+      const tableIds = ["tblChargers", "tblVehicles", "tblPrices", "tblRoutes", "tblSchedule"];
+      for (const id of tableIds) {
+        const tb = document.querySelector(`#${id} tbody`);
+        if (!tb) continue;
+
+        const rows = Array.from(tb.querySelectorAll("tr"));
+        rows.forEach(row => {
+          if (!q) {
+            row.classList.remove("hiddenRow");
+            return;
+          }
+          const txt = row.textContent?.toLowerCase?.() ?? "";
+          row.classList.toggle("hiddenRow", !txt.includes(q));
+        });
+      }
+    }
+
+    $("searchInput").addEventListener("input", (e) => applySearchFilter(e.target.value));
+    $("searchInput").addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.target.value = "";
+        applySearchFilter("");
+      }
+    });
+
+    // -------------------- Inicialização --------------------
+    loadState();
+
+    // Se o nowOverride vier vazio, põe o seletor com "agora" (opcional)
+    if (!$("nowOverride").value) {
+      $("nowOverride").value = ""; // deixa vazio por defeito
+    }
+
+    renderAll();
+    saveState();
+
+    const savedTab = localStorage.getItem("fleet_ai_tab");
+    setTab(savedTab === "ops" ? "ops" : "config");
+
+    pingApi();
+    refreshPrice();
+    setInterval(refreshPrice, 30000);
+
+    initKpiSparks();
+  </script>
+</body>
+</html>
