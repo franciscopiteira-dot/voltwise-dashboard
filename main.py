@@ -7,10 +7,10 @@ from typing import List, Optional
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .models import Vehicle, Charger, RoutePlan, EnergyPricePoint, SiteConstraints
-from .scheduler import make_plan
-from .notifications import Notifier
-from .price_provider import PriceCache
+from models import Vehicle, Charger, RoutePlan, EnergyPricePoint, SiteConstraints
+from scheduler import make_plan
+from notifications import Notifier
+from price_provider import PriceCache
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Fleet AI")
@@ -210,4 +210,5 @@ async def ws_endpoint(ws: WebSocket):
             await ws.receive_text()
     except WebSocketDisconnect:
         notifier.disconnect(ws)
+
 
