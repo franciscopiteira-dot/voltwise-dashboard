@@ -1086,8 +1086,8 @@
   <div id="toasts"></div>
 
   <script>
-    const API_BASE = window.location.origin;
-    const WS_URL = (window.location.protocol === "https:" ? "wss://" : "ws://") + window.location.host + "/ws";
+    const API_BASE = "https://voltwise-dashboard.onrender.com";
+    const WS_URL = "wss://voltwise-dashboard.onrender.com/ws";
 
     // -------------------- State --------------------
     let chargers = [{ id: "C1", max_kw: 22, enabled: true, efficiency: 0.92 }];
@@ -1844,3 +1844,4 @@
   </script>
 </body>
 </html>
+
