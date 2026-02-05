@@ -38,7 +38,8 @@ app.add_middleware(
 BASE_DIR = Path(__file__).resolve().parent.parent  # .../fleet_ai
 WEB_DIR = BASE_DIR / "web"
 
-app.mount("/static", StaticFiles(directory=str(WEB_DIR)), name="static")
+if WEB_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(WEB_DIR)), name="static")
 
 
 @app.get("/")
@@ -210,5 +211,6 @@ async def ws_endpoint(ws: WebSocket):
             await ws.receive_text()
     except WebSocketDisconnect:
         notifier.disconnect(ws)
+
 
 
