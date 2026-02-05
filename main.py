@@ -11,9 +11,16 @@ from .models import Vehicle, Charger, RoutePlan, EnergyPricePoint, SiteConstrain
 from .scheduler import make_plan
 from .notifications import Notifier
 from .price_provider import PriceCache
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Fleet AI")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 notifier = Notifier()
 price_cache = PriceCache()
@@ -203,3 +210,4 @@ async def ws_endpoint(ws: WebSocket):
             await ws.receive_text()
     except WebSocketDisconnect:
         notifier.disconnect(ws)
+
