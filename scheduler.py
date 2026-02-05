@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Dict, Tuple, Any, Optional
 
-from .models import Vehicle, Charger, RoutePlan, EnergyPricePoint, SiteConstraints
+from models import Vehicle, Charger, RoutePlan, EnergyPricePoint, SiteConstraints
 
 
 @dataclass
@@ -218,3 +218,4 @@ def make_plan(
 
     total_kw = site.site_max_kw - remaining_kw
     return PlanResult(ts=now, total_kw=total_kw, commands=commands, alerts=alerts, explanations=explanations)
+
